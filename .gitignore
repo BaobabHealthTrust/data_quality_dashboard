@@ -1,0 +1,11 @@
+*.yml
+*.txt
+*.sql
+*.idea
+*.lock
+*~
+tmp/
+db/schema.rb
+test/*.json
+log/
+
