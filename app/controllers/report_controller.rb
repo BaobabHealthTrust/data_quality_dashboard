@@ -20,9 +20,6 @@ class ReportController < ApplicationController
     end_date = params[:end_date].to_date.strftime("%Y-%m-%d")
 
     case params[:report_type]
-    when "drug report"
-      drug = params[:drug]
-      redirect_to :action => 'drug_report',:drug => drug, :start_date => start_date, :end_date => end_date
     when "aggregate report"
       redirect_to :action => 'aggregate_report', :start_date => start_date, :end_date => end_date
     when "site report"
@@ -34,14 +31,41 @@ class ReportController < ApplicationController
   end
 
   def site_report
-    @title = "Site Report For #{params[:site]}  From #{params[:start_date].to_date.strftime("%d %b %Y")} To #{params[:end_date].to_date.strftime("%d %b %Y")}"
+    @title = "Site Report For #{params[:site]}  From #{params[:start_date].to_date.strftime("%d %B %Y")} To #{params[:end_date].to_date.strftime("%d %B %Y")}"
+    @results = {}
+    rule_id = Definition.where(:name => "Data quality rule violation").first.id
+    site_id = Site.find_by_name(params[:site])
+    observations = Observation.find(:all,:conditions => ["site_id = ? AND value_date >= ? AND value_date <= ? AND definition_id = ?",
+                                    site_id, params[:start_date], params[:end_date], rule_id])
 
+    (observations || []).each do |observation|
+      @results[observation.value_date] = {} if @results[observation.value_date].blank?
+      @results[observation.value_date][observation.value_text] = observation.value_numeric.to_i
+    end
+
+    (@results.keys || []).each do |date|
+      @results[date] = @results[date].sort_by {|rule, amount| amount }.reverse
+    end
 
     render :layout => 'report_layout'
   end
 
   def aggregate_report
     @title = "Aggregate Report From #{params[:start_date].to_date.strftime("%d %B %Y")} To #{params[:end_date].to_date.strftime("%d %B %Y")}"
+    @results = {}
+    rule_id = Definition.where(:name => "Data quality rule violation").first.id
+    observations = Observation.find_by_sql("SELECT value_date, value_text, SUM(value_numeric) as amount FROM observations
+                                        WHERE definition_id = #{rule_id} AND value_date >= '#{params[:start_date]}' AND
+                                        value_date <= '#{params[:end_date]}' GROUP BY value_date, value_text ORDER BY value_date DESC")
+
+    (observations || []).each do |observation|
+      @results[observation.value_date] = {} if @results[observation.value_date].blank?
+      @results[observation.value_date][observation.value_text] = observation.amount.to_i
+    end
+
+    (@results.keys || []).each do |date|
+      @results[date] = @results[date].sort_by {|rule, amount| amount }.reverse
+    end
 
     render :layout => 'report_layout'
   end
@@ -49,8 +73,9 @@ class ReportController < ApplicationController
   def ranking
     @ranking = {}
     @ranking["All"] = {}
+    rule_id = Definition.where(:name => "Data quality rule violation").first.id
     rankings = Observation.find_by_sql("SELECT site_id, value_text, SUM(value_numeric) as amount FROM observations
-                                        WHERE definition_id = 12 AND value_date >= '#{params[:start_date]}' AND
+                                        WHERE definition_id = #{rule_id} AND value_date >= '#{params[:start_date]}' AND
                                         value_date <= '#{params[:end_date]}' GROUP BY site_id, value_text ORDER BY amount DESC")
     (rankings || []).each do |rank|
 
