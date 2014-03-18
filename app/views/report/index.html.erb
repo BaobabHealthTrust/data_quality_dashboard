@@ -2,25 +2,15 @@
 
   function siteMenu()
   {
-<%if params[:stock]%>
+
       var path = [
-        "/report/stock_out_estimates?type=calculated",
-        "/report/stock_out_estimates?type=verified_by_clinic",
-        "/report/stock_out_estimates?type=verified_by_supervision"
-      ];
-      var icons = ['calculated.jpeg','clinic.png', 'supervisor.jpg'];
-      var title = ['Calculated From Raw Data', 'Verified By Clinic', 'Verified By Supervision'];
-<%else%>
-      var path = [
-        "/report/report_menu?type=drug report",
         "/report/report_menu?type=site report",
         "/report/report_menu?type=aggregate report",
-        "/report/index?stock=true"
+        "/report/report_menu?type=ranking report",
       ];
-      var icons = ['pills3.png','Hospital-icon.png','aggregate.png', 'd_icon.jpeg'];
-      var title = ['Drug Report', 'Site Report', 'Aggregate Report', "Stock Reports"];
-<%end%>
-  
+      var icons = ['pills3.png','Hospital-icon.png','aggregate.png', 'aggregate.png'];
+      var title = [ 'Site Report', 'Aggregate Report', 'Data Quality Issues Ranking'];
+
     loadMenu(title,icons,path);
 
   }

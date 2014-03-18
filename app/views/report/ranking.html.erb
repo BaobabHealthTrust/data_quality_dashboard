@@ -1,0 +1,162 @@
+<style type="text/css">
+    input{
+        width: auto;
+        font-size: 28px;
+    }
+    select{
+        width: 100%;
+        font-size: 28px;
+    }
+    button{
+        width: auto;
+        font-size: 28px;
+    }
+    table.fullpage{
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -1%;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .halfpage tr{
+        height: 80px;
+
+    }
+
+    .link{
+        float: right;
+        position: absolute;
+        z-index: 1;
+        right: 1%;
+        top: 4px;
+    }
+
+    th{
+        text-align: left;
+        font-size: 16px;
+        background: #66CC66;
+        padding: 0px;
+        padding-top: 2px;
+        color: black;
+    }
+    #datalist td{
+        text-align: left;
+        font-size: 16px;
+        color: darkslategrey;
+        background-color: azure;
+    }
+
+    .header {
+        position: absolute;
+        top: 3%;
+        z-index: 0;
+        height: 10%;
+        overflow: hidden;
+    }
+
+</style>
+
+<div class="stock-data">
+
+  <table  class="fullpage header" width="100" cellspacing="5px" cellpadding="10px">
+
+    <tr>
+      <td style="padding-left: 5%; font-size: 20px;" colspan="2"><span style="color: lightblue;font-weight: bold;">Select Site</span>
+        <select id="sites" style="margin-left: 3%; width: 20%; font-size: 20px;" name="site_name" id='site' onchange="loadSite(this.value)">
+          <% (@ranking.keys || []).each do |site| %>
+              <option><%= site %></option>
+          <% end %>
+        </select>
+      </td>
+      <td  id ="date" style="padding-left: 0px; color: lightblue; font-weight: bold;">&nbsp</td>
+
+    </tr>
+    <tr>
+      <th style="width: 5%; text-align: center;">Number</th>
+      <th style="width: 80%">Rule</th>
+      <th style="width: 15%;text-align: center;">Violations</th>
+    </tr>
+    <tr>
+      <td colspan="6">
+        <div id ="data-holder" style="height: 535px; overflow: auto;">
+          <table id ="datalist"  style="width: 100%;" width="100" cellspacing="4px" cellpadding="10px">
+
+          </table>
+        </div>
+      </td>
+    </tr>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+    <!--
+    var ranks = {};
+    <%@ranking.keys.each do |site|%>
+
+        ranks["<%= site %>"] = {};
+        <%@ranking[site].each do |rule, amount|%>
+
+            ranks["<%= site %>"]["<%= rule %>"] = <%= amount %>;
+
+        <%end%>
+    <%end%>
+
+
+    function loadSite(site)
+    {
+        var data = ranks[site];
+        var rules = Object.keys(data);
+        var table = document.getElementById("datalist");
+
+        table.innerHTML = "";
+
+        for (var i = 0; i < rules.length; i++){
+
+            var row = create("tr", "table-row", "");
+            row.style.width = "100%";
+
+            var td1 = create("td", "table-data", i+1);
+            td1.style.width = "5%";
+            td1.style.textAlign = "left"
+            row.appendChild(td1);
+
+            var td2 = create("td", "table-data", rules[i])
+            td2.style.width = "80%";
+            td2.style.textAlign = "left";
+            row.appendChild(td2)
+
+            var td3 = create("td", "table-data", parseInt(data[rules[i]]).toLocaleString());
+            td3.style.width = "13%";
+            td3.style.textAlign = "center";
+            row.appendChild(td3)
+
+            table.appendChild(row);
+        }
+
+    }
+
+    function create(divType, type, data){
+        var node = document.createElement(divType);
+        node.style.diplay = type;
+        if (divType == "tr"){
+            node.style.fontSize = "12px";
+            node.style.padding = "0px";
+            node.style.background = "#FFFFFF";
+        }
+        if (data != ""){
+            node.innerHTML = data;
+        }
+        return node;
+    }
+
+    loadSite(document.getElementById("sites").value);
+    holder = document.getElementById("data-holder")
+    holder.style.height = screen.width * 0.39 + "px";
+
+
+    //-->
+</script>
+
+

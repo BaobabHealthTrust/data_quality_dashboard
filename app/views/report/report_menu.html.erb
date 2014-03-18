@@ -63,12 +63,12 @@
           </select>
         </td>
       </tr>
-      <tr style="display:<%= params[:type].eql?('drug report') ? '' : 'none' %> ">
-        <td id="drug_lbl">Select Drug</td>
+      <tr style="display:<%= params[:type].eql?(' report') ? '' : 'none' %> ">
+        <td id="issue_lbl">Select Issue</td>
         <td>
-          <select name="drug" id='drug'>
-            <% (@drugs || []).each do |drug| %>
-                <option><%= drug %></option>
+          <select name="issue" id='issue'>
+            <% (@issues || []).each do |issue| %>
+                <option><%= issue %></option>
             <% end %>
           </select>
         </td>
@@ -106,10 +106,6 @@
         else if((type == "site report") && (document.getElementById('site').value.trim() == ""))
         {
             jAlert("Please provide site name", "Incomplete Information");
-        }
-        else if((type= "drug report") && (document.getElementById('drug').value.trim() == ""))
-        {
-            jAlert("Please provide drug name", "Incomplete Information");
         }
         else
         {

@@ -38,19 +38,6 @@ DrugMonitoringProgram::Application.routes.draw do
 
   post "user/save_edit"
 
-  ################### PUBLICATION #######################
-  match '/publications' => "publication#index"
-  get "publication/index"
-
-  get "publication/new"
-
-  get "publication/edit"
-
-  get "publication/publication_edit"
-
-  post "publication/delete"
-
-  post "publication/save"
 
   ################### OBSERVATION ######################
 
@@ -58,11 +45,10 @@ DrugMonitoringProgram::Application.routes.draw do
   get "report/index"
   get "report/site_list"
   get "report/report_menu"
-  get "report/drug_report"
   get "report/site_report"
   get "report/aggregate_report"
+  get "report/ranking"
   post "report/process_report"
-  get "report/stock_out_estimates"
 
   ################### HOME ##############################
 

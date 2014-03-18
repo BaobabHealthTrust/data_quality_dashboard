@@ -5,11 +5,11 @@ class HomeController < ApplicationController
     rule_id = Definition.where(:name => "Data quality rule violation").first.id
 
     @notices = Observation.find(:all,
-                                :conditions => ["definition_id = ? AND value_date >= ?",rule_id, (7.days.ago).to_date],
+                                :conditions => ["definition_id = ? AND value_date >= ?",rule_id, (10.days.ago).to_date],
                                 :order => "value_date DESC", :limit => 20)
 
     @rankings = Observation.find_by_sql("SELECT value_text, SUM(value_numeric) as amount FROM observations
-                                        WHERE definition_id = 12 AND value_date >= '2014-01-01' GROUP BY value_text
+                                        WHERE definition_id = 12 AND value_date >= #{(10.days.ago).to_date} GROUP BY value_text
                                         ORDER BY amount DESC LIMIT 15")
 
 
