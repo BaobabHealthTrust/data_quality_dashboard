@@ -33,6 +33,7 @@ class ReportController < ApplicationController
   def site_report
     @title = "Site Report For #{params[:site]}  From #{params[:start_date].to_date.strftime("%d %B %Y")} To #{params[:end_date].to_date.strftime("%d %B %Y")}"
     @results = {}
+    @summary = Hash.new(0)
     rule_id = Definition.where(:name => "Data quality rule violation").first.id
     site_id = Site.find_by_name(params[:site])
     observations = Observation.find(:all,:conditions => ["site_id = ? AND value_date >= ? AND value_date <= ? AND definition_id = ?",
@@ -41,6 +42,7 @@ class ReportController < ApplicationController
     (observations || []).each do |observation|
       @results[observation.value_date] = {} if @results[observation.value_date].blank?
       @results[observation.value_date][observation.value_text] = observation.value_numeric.to_i
+      @summary[observation.value_date] += observation.value_numeric.to_i
     end
 
     (@results.keys || []).each do |date|

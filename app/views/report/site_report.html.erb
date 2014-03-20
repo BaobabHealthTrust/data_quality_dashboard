@@ -10,9 +10,75 @@
     } );
 </script>
 
+<script type="text/javascript">
+    function trend()
+    {
+        var issues = [];
+    <% (@summary || []).each do |day, amount| %>
+        issues.push([Date.UTC(<%= day.year %>,<%= day.month - 1 %>,<%= day.day %>), <%= amount %>]);
+    <% end %>
+
+        try{
+
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: "graph"
+                },
+                xAxis: {
+
+                    title: {
+                        text: 'Days'
+                    },
+                    type:'datetime',
+                    dateTimeLabelFormats: {
+                        month: '%e. %b',
+                        year: '%b'
+                    }
+
+                },
+                tooltip: {
+                    formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                                Highcharts.dateFormat('%e %b %Y', this.x) +': '+ this.y +' issues';
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of Issues'
+                    },
+                    min : 0
+                },
+                title: {
+                    text : "<%= params[:site]  %>  Issue Tracking"
+                },
+                series: [{
+                name: 'Number of Issues',
+                data: issues
+                }]
+                ,
+                exporting: { enabled: false },
+                credits: {enabled: false}
+            });
+
+
+        }
+        catch(ex)
+        {
+            alert('error in jQuery call:' + ex);
+        }
+    }
+
+    setTimeout("trend()",20);
+</script>
+
+<div style="width: 100%; text-align: center;height: 50%;">
+    <div id='graph'>
+        &nbsp;
+    </div>
+</div>
 
 <div style="width: 100%;text-align: center;">
-  <table class="display" id="drugs" width="100%">
+  <table class="display" id="drugs" width="99%">
     <thead>
     <tr>
       <th style="width: 15%;">Date</th>
