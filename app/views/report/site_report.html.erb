@@ -71,31 +71,31 @@
     setTimeout("trend()",20);
 </script>
 
-<div style="width: 100%; text-align: center;height: 50%;">
-    <div id='graph'>
+<div style="width: 100%;">
+    <div style="height: 45vh;" id='graph'>
         &nbsp;
     </div>
 </div>
 
 <div style="width: 100%;text-align: center;">
-  <table class="display" id="drugs" width="99%">
-    <thead>
-    <tr>
-      <th style="width: 15%;">Date</th>
-      <th style="text-align: left;">Rule</th>
-      <th style="width: 10%;">Violation</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% (@results.keys || []).each do |day|%>
-        <% (@results[day] || []).each do |rule, amount|%>
-            <tr>
-              <td><%= day.strftime('%d %B %Y') %></td>
-              <td style="text-align: left;"><%= rule %></td>
-              <td><%= number_with_delimiter(amount, :delimeter => ',') %></td>
-            </tr>
-        <% end %>
-    <% end %>
-    </tbody>
-  </table>
+    <table class="display" id="drugs" width="100%">
+      <thead>
+      <tr>
+        <th style="width: 15%;">Date</th>
+        <th style="text-align: left;">Rule</th>
+        <th style="width: 10%;">Violation</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% (@results.keys || []).each do |day|%>
+          <% (@results[day] || []).each do |rule, amount|%>
+              <tr>
+                <td><%= day.strftime('%d %B %Y') %></td>
+                <td style="text-align: left;"><%= rule %></td>
+                <td><%= number_with_delimiter(amount, :delimeter => ',') %></td>
+              </tr>
+          <% end %>
+      <% end %>
+      </tbody>
+    </table>
 </div>

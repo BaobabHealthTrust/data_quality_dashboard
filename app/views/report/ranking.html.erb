@@ -1,3 +1,15 @@
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#drugs').dataTable({
+            "aaSorting": [[ 0, "asc" ]],
+            'iDisplayLength': 17,
+            "bLengthChange": false,
+            "bRetrieve": true,
+            "bFilter": false
+        });
+    } );
+</script>
+
 <style type="text/css">
     input{
         width: auto;
@@ -53,42 +65,33 @@
         height: 10%;
         overflow: hidden;
     }
+    div.dataTables_filter, div.dataTables_length{
+        display: none ;
+    }
 
 </style>
 
-<div class="stock-data">
-
-  <table  class="fullpage header" width="100" cellspacing="5px" cellpadding="10px">
-
-    <tr>
-      <td style="padding-left: 5%; font-size: 20px;" colspan="2"><span style="color: lightblue;font-weight: bold;">Select Site</span>
-        <select id="sites" style="margin-left: 3%; width: 20%; font-size: 20px;" name="site_name" id='site' onchange="loadSite(this.value)">
-          <% (@ranking.keys || []).each do |site| %>
-              <option><%= site %></option>
-          <% end %>
-        </select>
-      </td>
-      <td  id ="date" style="padding-left: 0px; color: lightblue; font-weight: bold;">&nbsp</td>
-
-    </tr>
+<div style="width: 100%;">
+  &nbsp;&nbsp;<span style="font-size:120%; ">Select Site</span>
+  <select id="sites" style="margin-left: 3%; width: 20%; font-size: 20px;" name="site_name" id='site' onchange="loadSite(this.value)">
+    <% (@ranking.keys || []).each do |site| %>
+        <option><%= site %></option>
+    <% end %>
+  </select>
+  <table class="display" id="drugs" width="100%">
+    <thead>
     <tr>
       <th style="width: 5%; text-align: center;">Number</th>
       <th style="width: 80%">Rule</th>
       <th style="width: 15%;text-align: center;">Violations</th>
     </tr>
-    <tr>
-      <td colspan="6">
-        <div id ="data-holder" style="height: 535px; overflow: auto;">
-          <table id ="datalist"  style="width: 100%;" width="100" cellspacing="4px" cellpadding="10px">
+    </thead>
+    <tbody>
 
-          </table>
-        </div>
-      </td>
-    </tr>
-
+    </tbody>
   </table>
-
 </div>
+
 
 <script type="text/javascript">
     <!--
@@ -108,33 +111,30 @@
     {
         var data = ranks[site];
         var rules = Object.keys(data);
-        var table = document.getElementById("datalist");
+        var table = document.getElementById("drugs");
 
-        table.innerHTML = "";
+        $("#drugs").dataTable().fnClearTable();
 
         for (var i = 0; i < rules.length; i++){
 
-            var row = create("tr", "table-row", "");
-            row.style.width = "100%";
+            $("#drugs").dataTable().fnAddData(
+               [
+                   i+1,
+                   rules[i],
+                   parseInt(data[rules[i]]).toLocaleString()
+               ]
+            )
 
-            var td1 = create("td", "table-data", i+1);
-            td1.style.width = "5%";
-            td1.style.textAlign = "left"
-            row.appendChild(td1);
 
-            var td2 = create("td", "table-data", rules[i])
-            td2.style.width = "80%";
-            td2.style.textAlign = "left";
-            row.appendChild(td2)
-
-            var td3 = create("td", "table-data", parseInt(data[rules[i]]).toLocaleString());
-            td3.style.width = "13%";
-            td3.style.textAlign = "center";
-            row.appendChild(td3)
-
-            table.appendChild(row);
         }
+        var oTable = $('#drugs').dataTable({
+            "bDestroy": true
+        })
 
+        var oSettings = oTable.fnSettings();
+        oSettings._iDisplayLength = 17;
+
+        oTable.fnDraw();
     }
 
     function create(divType, type, data){
@@ -152,9 +152,6 @@
     }
 
     loadSite(document.getElementById("sites").value);
-    holder = document.getElementById("data-holder")
-    holder.style.height = screen.width * 0.39 + "px";
-
 
     //-->
 </script>
