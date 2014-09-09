@@ -6,5 +6,3 @@ gem 'json', '1.5.0'
 gem 'bundler'
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'rest-client'
-gem "paperclip", "~> 2.0"
-

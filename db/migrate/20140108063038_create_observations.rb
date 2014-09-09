@@ -5,8 +5,9 @@ class CreateObservations < ActiveRecord::Migration
       t.integer :definition_id
       t.integer :value_numeric
       t.date :value_date
+      t.date :obs_datetime
       t.string  :value_text
-      t.string :value_drug
+      t.integer :creator
       t.timestamps
     end
   end
