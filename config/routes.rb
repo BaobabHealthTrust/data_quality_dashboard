@@ -1,4 +1,4 @@
-DrugMonitoringProgram::Application.routes.draw do
+DataQualityDashboard::Application.routes.draw do
 
   get "administration/index"
 

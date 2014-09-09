@@ -1,55 +1,64 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Data Quality Dashboard</title>
   <script type="text/javascript">
-     function setup()
-     {
-        <% if User.current.user_role.role.role != "Administrator" %>
-            document.getElementById('items').deleteCell(3);
-        <% end %>
-     }
+
   </script>
-  <%= javascript_include_tag 'jquery' %>
-  <script language="javascript" type="text/javascript" src="/javascripts/jquery.ui.draggable.js"></script>
-  <script language="javascript" type="text/javascript" src="/javascripts/jquery.alerts.js"></script>
-  <script language="javascript" type="text/javascript" src="/javascripts/application.js"></script>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
-  <link href="/stylesheets/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css" />
 </head>
 
-<body  onload="setup()">
-<div class="heading" >
-  <table class="menu" cellspacing="0px">
-    <tr>
-      <td style="width: 60px;"><img src="/images/app.png" style="float: left;margin-top: 5px;margin-left: 5px;height:60px;"></td>
-      <td style="text-align: left;vertical-align: text-top;">
-        <span style="font-size: 35px;color: #C0C0C0;font-family:arial;">
-            Data Quality Dashboard
-          </span>
-      </td>
+<body style="padding-top: 0px !important">
+ <div class="navbar navbar-default">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    
+    <a class="navbar-brand" href="#">Quality Monitoring Dashboard</a>
+  </div>
+  <div class="navbar-collapse collapse navbar-responsive-collapse">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Active</a></li>
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">Dropdown header</li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul>
+      </li>
+    </ul>
 
-      <td class="link" onmousedown="window.location='/'">Home</td>
-      <td class="link" onmousedown="window.location= '/report/index'">Report</td>
-      <%if User.current.user_role.role.role != 'Other' %>
-        <td class="link" onmousedown="window.location='/administration/index'" >Administration</td>
-       <% end %>
-      <td class="link" onmousedown="window.location= '/user/logout'">Logout</td>
-    </tr>
-  </table>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Link</a></li>
+      <li class="dropdown open">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+ </div>
 
-</div>
+ <script src="/javascripts/jquery.js"></script>
+ <script src="/javascripts/bootstrap.js"> </script>
+ <script src="/javascripts/bootswatch.js"> </script>
 
-<div class="content">
-  <%= yield %>
-</div>
-<div class="footer">
-    <% if !@lastdate.blank? %>
-        <span style="color: silver;float: right;font-family: arial;font-size: 23px;margin-right: 10px;">
-          Data valid as of <%= @lastdate.to_date.strftime("%d %B %Y") %>
-        </span>
-    <% end %>
-</div>
 </body>
 </html>

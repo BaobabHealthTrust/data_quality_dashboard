@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-DrugMonitoringProgram::Application.load_tasks
+DataQualityDashboard::Application.load_tasks
