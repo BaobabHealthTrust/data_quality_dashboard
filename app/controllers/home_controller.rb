@@ -11,6 +11,7 @@ class HomeController < ApplicationController
           'region' => source["region"],
           'x' => source["x"],
           'y' =>source["y"],
+          'code' => source["code"],
           'name' => source["name"]
       }
 
