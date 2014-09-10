@@ -43,17 +43,14 @@ DataQualityDashboard::Application.routes.draw do
 
   ################### REPORT ############################
   get "report/index"
-  get "report/site_list"
-  get "report/report_menu"
-  get "report/site_report"
-  get "report/aggregate_report"
-  get "report/ranking"
-  post "report/process_report"
+  get "report/dynamic_view"
+  get "report/static_view"
 
   ################### HOME ##############################
 
   match '/home' => "home#index"
   get "home/index"
+  get "home/map_main"
   post "home/graph"
 
   # The priority is based upon order of creation:
