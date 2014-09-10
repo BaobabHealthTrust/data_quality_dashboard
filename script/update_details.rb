@@ -23,7 +23,7 @@ def start
     start_date = last_update(site)
     end_date = Date.today.to_date
 
-    url = "http://#{site.ip_address}:#{site.port}/validation_result/list"
+    url = "http://#{site.host}:#{site.port}/validation_result/list"
     data = JSON.parse(RestClient.post(url, {:start_date => start_date, :end_date => end_date})) rescue (
     puts "**** Error when pulling data from site #{key}"
     next
@@ -52,23 +52,24 @@ def record(site,data)
 
   (data || []).each do |result|
 
-    defn = Definition.where(:name => result[:rule_desc]).first.id
+
+    defn = Definition.check(result["rule_desc"], "Validation rule")
 
     #Check if record for same day already exists
     past_result = Observation.where(:site_id =>  site.id,
                                :definition_id => defn,
-                               :obs_datetime => result[:date_checked]).first
+                               :obs_datetime => result["date_checked"]).first
 
     #If is doesn't exist create new record otherwise update existing record
     if past_result.blank?
         past_result = Observation.new({:site_id =>  site.id,
                                        :definition_id => defn,
-                                       :obs_datetime => result[:date_checked],
-                                       :value_numeric => result[:failures],
+                                       :obs_datetime => result["date_checked"],
+                                       :value_numeric => result["failures"],
                                        :creator => $user_id
                                       })
     else
-      past_result.value_numeric = result[:failures]
+      past_result.value_numeric = result["failures"]
     end
     past_result.save
   end
@@ -86,8 +87,7 @@ def record_pulled_datetime(site, start_date, end_date)
   end
   pulled_time.pulled_datetime = ("#{end_date.to_date} #{Time.now().strftime('%H:%M:%S')}")
   pulled_time.save
-  puts "Recorded for :#{site.name}, From #{start_date.to_date.strftime("%d %B %Y")}
-          to #{end_date.to_date.strftime("%d %B %Y")}"
+  puts "Recorded for :#{site.name}, From #{start_date.to_date.strftime("%d %B %Y")} to #{end_date.to_date.strftime("%d %B %Y")}"
 end
 
 start
