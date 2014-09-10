@@ -24,6 +24,10 @@
           width: 100%;
       }
 
+      td{
+          padding: 0px;
+          margin:0px;
+      }
       .cell {
           display: table-cell;
           vertical-align: top;
@@ -105,10 +109,10 @@
         __$("main-display").style.height = (window.innerHeight - 90) + "px";
         __$("main-display").style.width = (screen.width * 0.345) + "px";
 
-        __$("report-display-dynamic").style.height = (window.innerHeight / 2 - 50) + "px";
+        __$("report-display-dynamic").style.height = (0.4 * window.innerHeight) + "px";
         __$("report-display-dynamic").style.width = (screen.width * 0.65) + "px";
 
-        __$("report-display-static").style.height = (window.innerHeight - 100) + "px";
+        __$("report-display-static").style.height = (0.6 * window.innerHeight) + "px";
         __$("report-display-static").style.width = (screen.width * 0.645) + "px";
     }
 
