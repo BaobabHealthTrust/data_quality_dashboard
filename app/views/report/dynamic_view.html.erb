@@ -23,28 +23,43 @@
       .num{
           text-align: center;
       }
-      thead{
+
+      .large {
           font-size: 2em;
-          background: white;
-          font-weight: bold;
+          color: lightgray !important;
+      }
+
+      .panel-heading{
+
+      }
+      .panel-body{
+          font-size: 1.9em !important;
+          padding: 10px !important;
+          padding-left: 30px !important;
+      }
+      .panel{
+          margin: 3%;
+          margin-top: 0%;
+          width: 88%;
+      }
+      .badge{
+          font-size: 1em !important;
+          min-width: 90px;
       }
   </style>
 </head>
 <body>
-<div id="main">
-  <table class="table table-condensed"">
-    <thead>
-    <tr>
-      <th><%= @site_name %></th>
-      <th class="num"></th>
-    </tr>
-    </thead>
+ <div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title large"><%= @site_name%></h3>
+  </div>
+  <table class="table table-condensed">
+
     <tbody>
     <% (@site_errors[0 .. 4]).each do |rule, n|%>
         <tr>
           <td><%= rule%></td>
-          <td class="num"><%= n%></td>
-          <td class="num"><%= n%></td>
+          <td class="num"><span class="badge"><%= n%></span></td>
         </tr>
     <% end %>
     </tbody>
