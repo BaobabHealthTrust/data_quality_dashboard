@@ -17,7 +17,7 @@
       }
 
       td {
-          font-size: 1.5em !important;
+          font-size: 1.3em !important;
       }
 
       .num{
@@ -25,17 +25,15 @@
       }
 
       .large {
-          font-size: 2em;
+          font-size: 1.8em;
           color: lightgray !important;
       }
 
       .panel-heading{
 
       }
-      .panel-body{
-          font-size: 1.9em !important;
-          padding: 10px !important;
-          padding-left: 30px !important;
+      .panel-label {
+         padding-left: 30px !important;
       }
       .panel{
           margin: 3%;
@@ -43,12 +41,12 @@
           width: 88%;
       }
       .badge{
-          font-size: 1em !important;
-          min-width: 90px;
+          font-size: 0.72em !important;
+          min-width: 60px;
       }
   </style>
 </head>
-<body>
+<body onload="resize()">
  <div class="panel panel-warning">
   <div class="panel-heading">
     <h3 class="panel-title large"><%= @site_name%></h3>
@@ -56,9 +54,9 @@
   <table class="table table-condensed">
 
     <tbody>
-    <% (@site_errors[0 .. 4]).each do |rule, n|%>
+    <% (@site_errors[0 .. 6] || @site_errors || []).each do |rule, n|%>
         <tr>
-          <td><%= rule%></td>
+          <td class="panel-label"><%= rule%></td>
           <td class="num"><span class="badge"><%= n%></span></td>
         </tr>
     <% end %>
@@ -66,7 +64,11 @@
   </table>
 </div>
 <script type="text/javascript">
+    function resize(){
 
+        var panel = document.getElementsByClassName("panel")[0];
+        panel.style.minHeight = ( 0.85 * window.innerHeight) + "px";
+    }
 </script>
 
 </body>
