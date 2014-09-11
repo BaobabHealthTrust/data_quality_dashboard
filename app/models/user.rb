@@ -49,8 +49,25 @@ class User < ActiveRecord::Base
       return false
 
     end
+  end
 
+  def self.create_user(username, password, user_role)
+    exists = User.where("voided = 0 AND username = ?", username)
 
+    if !exists.blank?
+      return ["Username is already taken", nil]
+    else
+      new_user = User.new()
+      new_user.password = password
+      new_user.username = username
+      if new_user.save
+        role = Role.find_by_role(user_role).id
+        UserRole.create({:user_id => new_user.id, :role_id => role})
+        return ["User successfully created", true]
+      else
+        return ["User could not be created",nil]
+      end
+    end
   end
 
 end
