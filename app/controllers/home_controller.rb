@@ -6,11 +6,12 @@ class HomeController < ApplicationController
 
   def map_main
     @sites = []
-    (Site.all || []).each do |source|
+    (Site.all).each do |source|
       site = {
           'region' => source["region"],
           'x' => source["x"],
           'y' =>source["y"],
+          'sitecode' => source["code"],
           'name' => source["name"]
       }
 

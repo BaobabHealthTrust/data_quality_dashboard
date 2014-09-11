@@ -1,1 +1,73 @@
-Hie dynamic
+
+
+<html>
+<head>
+  <title>Dynamic View</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+
+  <style>
+      body {
+          padding-top: 0px;
+      }
+
+      #main {
+          width: 85%;
+          margin-left: 5%;
+      }
+
+      td {
+          font-size: 1.5em !important;
+      }
+
+      .num{
+          text-align: center;
+      }
+
+      .large {
+          font-size: 2em;
+          color: lightgray !important;
+      }
+
+      .panel-heading{
+
+      }
+      .panel-body{
+          font-size: 1.9em !important;
+          padding: 10px !important;
+          padding-left: 30px !important;
+      }
+      .panel{
+          margin: 3%;
+          margin-top: 0%;
+          width: 88%;
+      }
+      .badge{
+          font-size: 1em !important;
+          min-width: 90px;
+      }
+  </style>
+</head>
+<body>
+ <div class="panel panel-warning">
+  <div class="panel-heading">
+    <h3 class="panel-title large"><%= @site_name%></h3>
+  </div>
+  <table class="table table-condensed">
+
+    <tbody>
+    <% (@site_errors[0 .. 4]).each do |rule, n|%>
+        <tr>
+          <td><%= rule%></td>
+          <td class="num"><span class="badge"><%= n%></span></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+
+</script>
+
+</body>
+</html>

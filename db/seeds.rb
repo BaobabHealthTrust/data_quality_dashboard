@@ -17,5 +17,16 @@ definition_types = ["Validation rule"]
   else
     puts "Definition type : #{type} already exists"
   end
+end
 
+puts "Creating user roles"
+roles =[["Administrator", "This is the system administrator who handles all system functions"],
+  ["Other", "Other system user"] ]
+
+(roles || []).each do |role|
+  if Role.find_by_role(role).blank?
+    new_role = Role.where({:role => role[0], :description => role[1]}).first_or_create
+  else
+    puts "Role : #{role[0]} already exists"
+  end
 end
