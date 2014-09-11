@@ -5,31 +5,25 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
 
   <style>
-
+  
   </style>
 </head>
 <body>
 
-  <div class="table_div">
-    <table class="table table-striped table-hover ">
-      <thead>
-        <tr>
-          <th>Rule</th>
-          <th>Violations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Patients without start reasons</td>
-          <td>9</td>
-        </tr>
-        <tr>
-          <td>Patients without outcomes</td>
-          <td>4</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<ul class="list-group">
+  <% 10.times do %>
+    <li class="list-group-item">
+      <span class="badge">14</span>
+      Patients without start reasons
+    </li>
+    <li class="list-group-item">
+      <span class="badge">2</span>
+      Patients without outcomes
+    </li>
+  <% end %>
+</ul>
+
+
 
 </body>
 </html>

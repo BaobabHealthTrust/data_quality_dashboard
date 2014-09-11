@@ -15,13 +15,13 @@
     #rule_violation_summary_graph{
       position: absolute;
       width: 42%;
-      height: 30em;
+      height: 40em;
     }
     #upper_graph, #lower_graph{
       /*width: 57em;*/
       position: relative;
       width: 100% !important;
-      height: 23em;
+      height: 22em;
     }
   </style>
 </head>
@@ -43,9 +43,14 @@
     <div style="display:table; position: absolute; left:45%; top: 50%;">
       <div style="display:table-row;">
         <div style="display: table-cell; width:20%;">
-            <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
-            <iframe id="lower_graph" src="/report/patients_without_start_reasons_graph"></iframe>
-        
+            <div class="list-group">
+              <a href="#" class="list-group-item active">Aggregate Rule violations Trend</a>
+              <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
+            </div>
+            <div class="list-group">
+              <a href="#" class="list-group-item active">Patients without start reasons</a>
+              <iframe id="lower_graph" src="/report/patients_without_start_reasons_graph"></iframe>
+            </div>
         </div>
       </div>
     </div>
