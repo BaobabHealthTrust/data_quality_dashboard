@@ -34,7 +34,7 @@ class ReportController < ApplicationController
   end
 
   def site_summary
-    render :layout => false
+    render :layout => "application"
   end
   
 end
