@@ -12,17 +12,23 @@
       left: 2%;
       top: 15%;
     }
+    
     #rule_violation_summary_graph{
       position: absolute;
       width: 42%;
-      height: 40em;
+      height: 45em;
     }
+    
     #upper_graph, #lower_graph{
-      /*width: 57em;*/
       position: relative;
       width: 100% !important;
       height: 22em;
     }
+
+    iframe{
+      border: none;
+    }
+    
   </style>
 </head>
 <body>
@@ -33,7 +39,7 @@
       <div style="display:table;">
         <div style="display:table-row">
             <div style="display: table-cell; ">
-              <div style="">
+              <div>
                 <iframe id="rule_violation_summary_graph" src="/report/rule_violations_summary"></iframe>
               </div>
             </div>
