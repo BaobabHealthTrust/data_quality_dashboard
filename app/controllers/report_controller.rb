@@ -20,4 +20,21 @@ class ReportController < ApplicationController
     @priority_sites = ["MPC", "Kawale", "Likuni", "Ntcheu", "Zomba", "Lighthouse", "Nkhota-kota"]
     render :layout => false
   end
+
+  def patients_without_start_reasons_graph
+    render :layout => false
+  end
+
+  def rule_violations_summary
+    render :layout => false
+  end
+
+  def rule_violations_trend_graph
+    render :layout => false
+  end
+
+  def site_summary
+    render :layout => false
+  end
+  
 end

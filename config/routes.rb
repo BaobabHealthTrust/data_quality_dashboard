@@ -45,7 +45,10 @@ DataQualityDashboard::Application.routes.draw do
   get "report/index"
   get "report/dynamic_view"
   get "report/static_view"
-
+  get "report/patients_without_start_reasons_graph"
+  get "report/rule_violations_summary"
+  get "report/rule_violations_trend_graph"
+  get "report/site_summary"
   ################### HOME ##############################
 
   match '/home' => "home#index"
