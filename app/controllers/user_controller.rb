@@ -49,11 +49,7 @@ class UserController < ApplicationController
   end
 
   def save_edit
-    user = User.where(:username => params[:user_name_old]).first
-    user.update_attributes({:username => params[:username], :password => params[:password]})
-    role = Role.find_by_role(params[:user_role]).id
-    user_role = user.user_role
-    user_role.update_attributes({:role_id => role})
+    User.update_user(params[:user_name_old],params[:username],params[:password],params[:user_role])
     redirect_to :action => "edit"
   end
 end

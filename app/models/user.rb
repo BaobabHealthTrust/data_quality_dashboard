@@ -70,4 +70,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def User.update_user(user_name_old, username, password, user_role)
+  user = User.where(:username => user_name_old).first
+  user.update_attributes({:username => username, :password => password})
+  role = Role.find_by_role(user_role).id
+  user_role = user.user_role
+  user_role.update_attributes({:role_id => role})
+  end
+
 end
