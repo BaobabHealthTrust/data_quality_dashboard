@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>Site summary</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+
+  <style>
+    #summary_data{
+      position: absolute;
+      width: 98%;
+      height: 70%;
+      left: 2%;
+      top: 15%;
+    }
+    
+    #rule_violation_summary_graph{
+      position: absolute;
+      width: 42%;
+      height: 45em;
+    }
+    
+    #upper_graph, #lower_graph{
+      position: relative;
+      width: 100% !important;
+      height: 22em;
+    }
+
+    iframe{
+      border: none;
+    }
+    
+  </style>
+</head>
+<body>
+  <div style="position:absolute; left:2%; width: 98%;">
+    <div>
+
+    </div>
+      <div style="display:table;">
+        <div style="display:table-row">
+            <div style="display: table-cell; ">
+              <div>
+                <iframe id="rule_violation_summary_graph" src="/report/rule_violations_summary"></iframe>
+              </div>
+            </div>
+        </div>
+      </div>
+
+    <div style="display:table; position: absolute; left:45%; top: 50%;">
+      <div style="display:table-row;">
+        <div style="display: table-cell; width:20%;">
+            <div class="list-group">
+              <a href="#" class="list-group-item active">Aggregate Rule violations Trend</a>
+              <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
+            </div>
+            <div class="list-group">
+              <a href="#" class="list-group-item active">Patients without start reasons</a>
+              <iframe id="lower_graph" src="/report/patients_without_start_reasons_graph"></iframe>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</body>
+</html>

@@ -14,4 +14,21 @@ class ReportController < ApplicationController
     @priority_sites = Observation.sorted_sites_failures
     render :layout => false
   end
+
+  def patients_without_start_reasons_graph
+    render :layout => false
+  end
+
+  def rule_violations_summary
+    render :layout => false
+  end
+
+  def rule_violations_trend_graph
+    render :layout => false
+  end
+
+  def site_summary
+    render :layout => "application"
+  end
+  
 end

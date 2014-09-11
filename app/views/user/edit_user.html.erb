@@ -1,73 +1,55 @@
 
-<style type="text/css">
-    input{
-        width: auto;
-        font-size: 28px;
-    }
-    select{
-        width: auto;
-        font-size: 28px;
-    }
-    button{
-        width: auto;
-        font-size: 28px;
-    }
-    table.halfpage{
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    .halfpage tr{
-        height: 80px;
+<div class="panel panel-info" style="width: 70%;margin-left: 2%;">
+  <div class="panel-heading">
+    <h3 class="panel-title">Edit User</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-horizontal" method="post" action="/user/save_edit" onsubmit="return verify_form()">
+      <fieldset>
+        <div class="form-group" id="usernameGroup">
+          <label for="inputEmail" class="col-lg-2 control-label">Username</label>
+          <div class="col-lg-10">
+            <input class="form-control" id="username" value='<%= @user.username %>' name="username" placeholder="Username" type="text">
+          </div>
+        </div>
 
-    }
-    .halfpage caption{
-        font-weight:bold;
-    }
-</style>
+        <div class="form-group" id="passwordGroup">
+          <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+          <div class="col-lg-10">
+            <input class="form-control" id="password" name="password" placeholder="Password" type="password">
+          </div>
+        </div>
 
-
-<div class="main_container">
-
-  <table class="halfpage" cellspacing="10px" cellpadding="20px">
-    <form method="post" action="/user/save" >
-      <caption style="font-family: arial;font-size:34px;">Edit User Details</caption>
-      <tr>
-        <td id="username_lbl">User Name</td>
-        <td><input type="text" name="username" id='username' value='<%= @user.username %>'></td>
-      </tr>
-      <tr>
-        <td id='password_lbl'>Password</td>
-        <td><input name="password" type="password" id='password'></td>
-      </tr>
-      <tr>
-        <td id='repassword_lbl'>Re-enter Password</td>
-        <td><input name="repassword" type="password" id='repassword'></td>
-      </tr>
-      <tr>
-        <td>User Role</td>
-        <td>
-          <select id="user_role">
-            <option>Other</option>
-            <option>Administrator</option>
-          </select>
-        </td>
-      </tr>
+        <div class="form-group" id="confirmPasswordGroup">
+          <label for="inputPassword" class="col-lg-2 control-label">Confirm Password</label>
+          <div class="col-lg-10">
+            <input class="form-control" id="repassword" placeholder="Confirm Password" type="password">
+          </div>
+        </div>
+        <div class="form-group" id="roleGroup">
+          <label for="select" class="col-lg-2 control-label">User Role</label>
+          <div class="col-lg-10">
+            <select class="form-control" id="user_role" name="user_role" >
+              <option>Other</option>
+              <option>Administrator</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-10 col-lg-offset-2">
+            <button class="btn btn-danger btn-sm" onmousedown="window.location= '/user/edit'">Cancel</button>
+            <button type="submit" class="btn btn-success btn-sm" >Save</button>
+          </div>
+        </div>
+      </fieldset>
+        <input type="hidden" name="user_name_old" value='<%= @user.username %>'>
     </form>
-    <tr>
-      <td colspan="2" style="text-align: center;">
-        <button onclick="verify_form();" style="width: 300px;height:60px;border-radius: 30px;" class="main">Save</button>
-      </td>
-    </tr>
-  </table>
-
+  </div>
 </div>
 
 <script type="text/javascript">
     <!--
-    function verify_form()
-    {
+    function verify_form() {
 
         var username = document.getElementById('username').value;
         var password = document.getElementById('password').value;
@@ -76,50 +58,37 @@
 
         if (username.trim() == "")
         {
-            jAlert("Username cannot be blank", "Incomplete Information");
-            highlight('username_lbl',true);
+            document.getElementById("usernameGroup").setAttribute("class", "form-group has-error");
         }
         else if (password.trim() == "")
         {
-            jAlert("A password cannot be blank", "Incomplete Information");
-            highlight('password_lbl',true);
+            document.getElementById("passwordGroup").setAttribute("class", "form-group has-error")
         }
         else if (password2.trim() == "")
         {
-            jAlert("Re enter password for confirmation", "Incomplete Information");
-            highlight('repassword_lbl',true);
+            document.getElementById("confirmPasswordGroup").setAttribute("class", "form-group has-error")
         }
         else if (password != password2)
         {
-            jAlert("Passwords provided do not match", "Incomplete Information");
-            highlight('repassword_lbl',true);
-            highlight('password_lbl',true);
+            document.getElementById("passwordGroup").setAttribute("class", "form-group has-error")
+            document.getElementById("confirmPasswordGroup").setAttribute("class", "form-group has-error")
         }
         else
-        {
-            jQuery.ajax({
-                url:  "/user/save_edit?password=" + password + "&username=" + username +"&role=" +role+"&user_id=" + <%=@user.id%>,
-                type:"POST",
-                success: function(msg){
-                    jAlert(msg, "User Edit Outcome")
-                    window.location = "/user/edit";
-                },
-                error: function(){
-                    jAlert("Could not edit user", "Unsuccessful!");
-                }
+        { /*
+         jQuery.ajax({
+         url:  "/user/save?password=" + password + "&username=" + username +"&role=" +role,
+         type:"POST",
+         success: function(msg){
 
-            });
+         },
+         error: function(){
+
+         }
+
+         });*/
+            return true;
         }
-
-
-    }
-
-    function clear()
-    {
-        document.getElementById('username').value = "";
-        document.getElementById('password').value = "";
-        document.getElementById('repassword').value = "";
-
+        return false;
     }
     //-->
 </script>

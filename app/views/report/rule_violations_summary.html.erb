@@ -1,0 +1,44 @@
+<html>
+<head>
+  <title>Rules violation site summary</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+
+  <style>
+    .rule_name{
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 2%;
+    }
+
+    .total_violations{
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 65%;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div style="position:relative; margin-top: -4%;">
+      <span class="rule_name">Rule</span>
+      <span class="total_violations">Total violations</span>
+    </div>
+    <div style="position:absolute; height: 90%; overflow: auto; width:100%;">
+      <ul class="list-group">
+        <% 10.times do %>
+          <li class="list-group-item">
+            <span class="badge">14</span>
+            Patients without start reasons
+          </li>
+          <li class="list-group-item">
+            <span class="badge">2</span>
+            Patients without outcomes
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

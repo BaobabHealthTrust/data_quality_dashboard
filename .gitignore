@@ -9,3 +9,4 @@ db/schema.rb
 test/*.json
 log/
 *.swp
+nbproject/
