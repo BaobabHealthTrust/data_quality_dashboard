@@ -2,6 +2,8 @@ class HomeController < ApplicationController
 
   def index
 
+    @sites = Site.all
+    @alerts = Site.alerts
   end
 
   def map_main
