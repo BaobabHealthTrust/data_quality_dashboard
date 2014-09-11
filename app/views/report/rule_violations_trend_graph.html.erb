@@ -1,0 +1,57 @@
+<html>
+<head>
+  <title>Rule violations graph</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+
+  <%= javascript_include_tag("jquery-1.8.2") %>
+  <%= javascript_include_tag("highcharts") %>
+  <%= javascript_include_tag("exporting") %>
+
+  <script>
+
+    $(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Aggregate Rule violations Trend'
+        },
+
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Violations'
+            }
+        },
+        credits: {
+          enabled: false
+        },
+
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Date',
+            data: [7.0, 6.9, 9.5, 14.5, 18.4, 14.5, 25.2, 26.5, 23.3, 24.3, 13.9, 9.6]
+        }]
+    });
+});
+
+  </script>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</body>
+</html>
