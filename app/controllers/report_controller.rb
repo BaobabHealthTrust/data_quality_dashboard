@@ -28,6 +28,16 @@ class ReportController < ApplicationController
   end
 
   def rule_violations_trend_graph
+    site_name = (params[:site_name] || 'MPC')
+    site_id = Site.find_by_name(site_name).id
+    start_date = Date.today - 3.months
+    end_date = Date.today
+
+    @data = {}
+    violation_trends = Observation.aggregate_rule_violation_trend(site_id, start_date, end_date)
+    @data["x"] = violation_trends.collect{|k, v|k.to_date.strftime("%d-%b")}
+    @data["y"] = violation_trends.collect{|k, v|v}
+    
     render :layout => false
   end
 
