@@ -60,6 +60,7 @@ DataQualityDashboard::Application.routes.draw do
   ################### SITE ##############################
 
   post "site/update_current_site"
+  get "site/get_current_site"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

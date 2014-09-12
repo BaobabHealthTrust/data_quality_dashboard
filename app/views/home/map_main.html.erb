@@ -5,11 +5,12 @@
 <body onload="resizeMap()" style="margin: 0px; padding: 0px; padding-left: 35px;">
 <div id="main" style="padding: 0px; text-align: center; overflow: hidden !important;"></div>
 
+<script src="/javascripts/jquery.js" charset="utf-8"></script>
 <script src="/javascripts/d3.js" charset="utf-8"></script>
 <script type="text/javascript">
 
     var zoomlevel = 1;
-
+    var currentSite = "";
     var loader = d3.xml("/images/mw.svg", function(xml) {
         document.getElementById("main").appendChild(xml.documentElement);
 
@@ -47,6 +48,7 @@
                 .style("fill", "red")
                 .style("margin", "auto")
                 .attr("r", 10)
+                .attr("class", "circle")
                 .attr("cx", "<%= x %>")
                 .attr("cy", "<%= y %>")
                 .attr("id", "<%= site['sitecode'].downcase %>")
@@ -55,6 +57,8 @@
                         window.parent.location = "/report/site_summary?site_name=" + this.getAttribute("tag")
                 })
                 .on("mouseover", function(){
+
+                    d3.select(".circle").attr("r", 10);
                     d3.select("#" + this.id).attr("r", 18).style("z-index", "100")
                             .style("fill", "#537ee0");
                     return tooltip.style("visibility", "visible");
@@ -105,15 +109,22 @@
 
     function updateSite(){
         jQuery.ajax({
-            url: "update_current_site?get=true",
+            url: "/site/get_current_site",
             type: "GET",
-            success: function(){
+            success: function(data){
+                 currentSite = JSON.parse(data);
+
+                if (currentSite.length > 0) {
+
+                }
 
             }
         })
+
+        setTimeout("updateSite()", 500);
     }
 
-        setTimeout("updateSite()", 500)
+        setTimeout("updateSite()", 500);
 
 </script>
 
