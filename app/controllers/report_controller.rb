@@ -27,6 +27,10 @@ class ReportController < ApplicationController
     render :layout => false
   end
 
+  def rule_violations_graph
+    render :layout => false
+  end
+  
   def site_summary
     render :layout => "application"
   end
