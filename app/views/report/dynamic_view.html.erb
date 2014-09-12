@@ -5,6 +5,7 @@
   <title>Dynamic View</title>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+  <script src="/javascripts/jquery.js" charset="utf-8"></script>
 
   <style>
       body {
@@ -62,13 +63,21 @@
     <% end %>
     </tbody>
   </table>
-</div>
+
+  </div>
 <script type="text/javascript">
     function resize(){
 
         var panel = document.getElementsByClassName("panel")[0];
         panel.style.minHeight = ( 0.85 * window.innerHeight) + "px";
     }
+
+    jQuery.ajax({
+        url: '/site/update_current_site',
+        type: 'POST',
+        data: {site: '<%= @site_name%>'}
+    });
+
 </script>
 
 </body>

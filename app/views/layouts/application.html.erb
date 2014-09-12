@@ -21,6 +21,10 @@
     div{
         -moz-user-select:none;
     }
+
+    .nav, .navbar, .navbar-default, .navbar-header, .navbar-collapse{
+        background: #033c73 !important;
+    }
   </style>
 
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen" />
@@ -37,62 +41,29 @@
     </button>
 
     <img class="navbar-brand" src="/images/app.png"/>
-    <div class="navbar-brand" href="#">Quality Monitoring Dashboard</div>
+    <div class="navbar-brand" style="color: lightgray;">Quality Monitoring Dashboard</div>
   </div>
   <div class="navbar-collapse collapse navbar-responsive-collapse">
     <ul class="nav navbar-nav">
-      <li ><a href="#">Home</a></li>
+      <li ><a  style="font-size: 1.1em; color: lightgray; text-decoration: underline;" href="/">Home</a></li>
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 1.1em; color: lightgray; text-decoration: underline;">Admin<b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="#">User Management</a>
-            <ul class="dropdown-menu submenu-show submenu-hide">
-              <li>
-                <a href="">Add User</a>
-              </li>
-              <li>
-                <a href="">Edit User</a>
-              </li>
-              <li>
-                <a href="">View Users</a>
-              </li>
-              <li><hr/></li>
-              <li>
-                <a href="/administration/site_assign">View Users</a>
-              </li>
-            </ul>
-          </li>
-          <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sites Management</a>
-            <ul class="dropdown-menu submenu-show submenu-hide">
-              <li>
-                <a href="/administration/site_add">Add Site</a>
-              </li>
-              <li>
-                <a href="/administration/site_edit">Edit Site</a>
-              </li>
-              <li><hr/></li>
-              <li>
-                <a href="/administration/site_assign">View Sites</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="divider"></li>
-          <li class="dropdown-header"></li>
-          <li><a href="#">Configurations</a></li>
+          <li><a href="/user/index">User Management</a></li>
+          <li><a href="/site/index">Site Management</a></li>
         </ul>
       </li>
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">logged in as <b>admin</b></a></li>
-      <li><a href="#">logout</a></li>
+      <li><div class="navbar-brand" style="font-size: 1.1em; color: lightgray;">logged in as <b><%= User.find(session[:user_id]).username%></b></div></li>
+      <li><a  style="font-size: 1.1em; color: lightgray; text-decoration: underline;" href="/user/logout">logout</a></li>
     </ul>
   </div>
  </div>
 
     <%= yield%>
- <div class="navbar  navbar-fixed-bottom" style="min-height: 19px !important; height: 19px;
+ <div class="navbar-fixed-bottom" style="min-height: 19px !important; height: 19px;
           text-align: center !important; padding-top: 0px !important; background: #ccc">
     <%= Date.today.strftime("%Y") %> <a href="http://www.baobabhealth.org" target="_blank">
    Baobab Health Trust</a>

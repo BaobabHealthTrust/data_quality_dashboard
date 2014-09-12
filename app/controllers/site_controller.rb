@@ -1,4 +1,5 @@
 class SiteController < ApplicationController
+
   def add_site
     render :layout => false
   end
@@ -39,5 +40,18 @@ class SiteController < ApplicationController
 
   def save_site
     return Site.add_site(params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
+  end
+
+  def update_current_site
+
+    Site.current = Site.find_by_name(params[:site])
+    render :layout => false
+  end
+
+  def get_current_site
+
+    site_name = Site.current
+    render :text => (Site.current.name rescue "").to_json
+
   end
 end

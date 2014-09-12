@@ -9,18 +9,27 @@
   <%#= javascript_include_tag("exporting") %>
 
   <script>
+    var x_axis = []
+    var y_axis = []
+    <% @data['x'] .each do |x| %>
+      x_axis.push('<%= x %>')
+    <% end %>
+
+    <% @data['y'] .each do |y| %>
+      y_axis.push(<%= y %>)
+    <% end %>
 
     $(function () {
     $('#container').highcharts({
         chart: {
-            type: 'line'
+            type: 'spline'
         },
         title: {
             text: ''
         },
 
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: x_axis
         },
         yAxis: {
             title: {
@@ -34,14 +43,14 @@
         plotOptions: {
             line: {
                 dataLabels: {
-                    enabled: true
+                    /*enabled: true*/
                 },
                 enableMouseTracking: false
             }
         },
         series: [{
             name: 'Date',
-            data: [7.0, 6.9, 9.5, 14.5, 18.4, 14.5, 25.2, 26.5, 23.3, 24.3, 13.9, 9.6]
+            data: y_axis
         }]
     });
 });

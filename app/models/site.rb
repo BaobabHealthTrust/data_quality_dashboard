@@ -4,6 +4,8 @@ class Site < ActiveRecord::Base
   validates_uniqueness_of :name, :code
   before_save :add_creator
 
+  cattr_accessor :current
+
   def self.alerts
     alerts = {"urgent" => [],
               "average" => [],
