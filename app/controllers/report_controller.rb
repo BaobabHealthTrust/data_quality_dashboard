@@ -20,6 +20,10 @@ class ReportController < ApplicationController
   end
 
   def rule_violations_summary
+     site_name = (params[:site_name] || 'MPC')
+     site = Site.find_by_name(site_name)
+     @site_name = site.name
+     @site_errors = Observation.sorted_site_failures(site.id)
     render :layout => false
   end
 
@@ -27,7 +31,14 @@ class ReportController < ApplicationController
     render :layout => false
   end
 
+  def rule_violations_graph
+    render :layout => false
+  end
+  
   def site_summary
+    site_name = (params[:site_name] || 'MPC')
+    site = Site.find_by_name(site_name)
+    @site_name = site.name rescue nil
     render :layout => "application"
   end
   

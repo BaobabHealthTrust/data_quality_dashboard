@@ -24,17 +24,14 @@
       <span class="rule_name">Rule</span>
       <span class="total_violations">Total violations</span>
     </div>
-    <div style="position:absolute; height: 90%; overflow: auto; width:100%;">
+    <div style="position:absolute; height: 88%; overflow: auto; width:100%;">
       <ul class="list-group">
-        <% 10.times do %>
+        <% @site_errors.each do |rule_name, total_failures| %>
           <li class="list-group-item">
-            <span class="badge">14</span>
-            Patients without start reasons
+            <span class="badge"><%= total_failures %></span>
+            <%= rule_name %>
           </li>
-          <li class="list-group-item">
-            <span class="badge">2</span>
-            Patients without outcomes
-          </li>
+  
         <% end %>
       </ul>
     </div>

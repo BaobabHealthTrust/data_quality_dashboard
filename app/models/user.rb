@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
   before_save :encrypt_password
   self.default_scope :conditions => "#{self.table_name}.voided = 0"
 
+  def role
+      self.user_role.role.role
+  end
+
   def self.random_string(len)
     #generat a random password consisting of strings and digits
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
@@ -71,11 +75,16 @@ class User < ActiveRecord::Base
   end
 
   def User.update_user(user_name_old, username, password, user_role)
-  user = User.where(:username => user_name_old).first
-  user.update_attributes({:username => username, :password => password})
-  role = Role.find_by_role(user_role).id
-  user_role = user.user_role
-  user_role.update_attributes({:role_id => role})
+    user = User.where(:username => user_name_old).first
+    if user.update_attributes({:username => username, :password => password})
+      if user_role.upcase != user.role.upcase
+        role = Role.find_by_role(user_role).id
+        user_role = user.user_role
+        user_role.update_attributes({:role_id => role})
+      end
+      return ["Details for user #{username} successfully updated", true]
+    else
+      return ["Could not update details for user #{username}", nil]
+    end
   end
-
 end
