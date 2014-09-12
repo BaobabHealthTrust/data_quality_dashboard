@@ -1,6 +1,8 @@
 class Site < ActiveRecord::Base
   set_primary_key :site_id
 
+  cattr_accessor :current
+
   def self.alerts
     alerts = {"urgent" => [],
               "average" => [],

@@ -52,7 +52,7 @@
                 .attr("id", "<%= site['sitecode'].downcase %>")
                 .attr("tag", "<%= site['name'] %>")
                 .on("mousedown", function(){
-                        alert("Kenneth");
+                        window.parent.location = "/report/site_summary?site_name=" + this.getAttribute("tag")
                 })
                 .on("mouseover", function(){
                     d3.select("#" + this.id).attr("r", 18).style("z-index", "100")
@@ -102,6 +102,19 @@
                 .style("background", "white")
 
     }
+
+    function updateSite(){
+        jQuery.ajax({
+            url: "update_current_site?get=true",
+            type: "GET",
+            success: function(){
+
+            }
+        })
+    }
+
+        setTimeout("updateSite()", 500)
+
 </script>
 
 </body>

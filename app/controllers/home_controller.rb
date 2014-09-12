@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   end
 
   def map_main
+
     @sites = []
     (Site.all).each do |source|
       site = {

@@ -57,7 +57,7 @@
       }
   </script>
 </head>
-<body onresize="resizeTable()" onload="resizeTable();switchViews()">
+<body onresize="resizeTable()" onload="resizeTable();switchViews(0)">
 
 <div id="main" class="table">
   <div class="row">
@@ -112,7 +112,7 @@
     var current_pos = 0;
     var timerHnd;
 
-    var timerSpacing = 30; // in seconds
+    var timerSpacing = 30; // to be in seconds
 
 
     <% (@sites || []).each do |site| %>
@@ -125,7 +125,7 @@
     }
 
 
-    function switchViews() {
+    function switchViews(start_point) {
         clearTimeout(timerHnd);
 
         if ((current_pos + 1) >= sites.length) {
@@ -135,12 +135,19 @@
             current_pos += 1;
         }
 
-        jQuery("#report-display-dynamic").fadeOut(1700);
-        __$("report-display-dynamic").setAttribute("src", "/report/dynamic_view?site=" + sites[current_pos]);
-        jQuery("#report-display-dynamic").fadeIn(2000);
+        if (start_point != 0) {
 
-        __$("report-display-static").setAttribute("src", "/report/static_view?site=" + sites[current_pos]);
-        timerHnd = setTimeout("switchViews()", timerSpacing * 1000);
+            jQuery("#report-display-dynamic").fadeOut(1700);
+            __$("report-display-dynamic").setAttribute("src", "/report/dynamic_view?site=" + sites[current_pos]);
+            jQuery("#report-display-dynamic").fadeIn(2000);
+            __$("report-display-static").setAttribute("src", "/report/static_view?site=" + sites[current_pos]);
+        }else{
+
+            __$("report-display-dynamic").setAttribute("src", "/report/dynamic_view?site=" + sites[current_pos]);
+            __$("report-display-static").setAttribute("src", "/report/static_view?site=" + sites[current_pos]);
+        }
+
+        timerHnd = setTimeout("switchViews(1)", timerSpacing * 1000);
     }
 
     function resizeTable() {
@@ -155,9 +162,6 @@
         __$("report-display-static").style.height = (0.5 * window.innerHeight) + "px";
         __$("report-display-static").style.width = (screen.width * 0.645) + "px";
     }
-
-    timerHnd = setTimeout("switchViews()", timerSpacing * 1000);
-
     //-->
 </script>
 
