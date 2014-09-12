@@ -40,4 +40,33 @@ class Observation < ActiveRecord::Base
                                               )
                                               GROUP BY ob.site_id").inject({}){|r, data| r[Site.find(data.site_id).name] = data.sum.to_i; r}
   end
+
+  def self.rule_violation_trend(site_id, definition_id, start_date, end_date)
+    data_hash = {}
+    data = self.find_by_sql("SELECT value_numeric, obs_datetime FROM observations 
+      WHERE definition_id=#{definition_id} AND DATE(obs_datetime) >= '#{start_date}'
+      AND DATE(obs_datetime) <= '#{end_date}' AND site_id = #{site_id}")
+    
+    data.each do |e|
+      obs_date = e.obs_datetime.to_date.strftime("%d-%b-%Y")
+      data_hash[obs_date] = e.value_numeric
+    end
+    
+    return data_hash.sort_by{|k, v|k.to_date}
+  end
+
+  def self.aggregate_rule_violation_trend(site_id, start_date, end_date)
+    data_hash = {}
+    data = self.find_by_sql("SELECT SUM(value_numeric) as value_numeric, obs_datetime FROM observations
+      WHERE DATE(obs_datetime) >= '#{start_date}' AND DATE(obs_datetime) <= '#{end_date}'
+      AND site_id = #{site_id} GROUP BY DATE(obs_datetime)")
+    
+    data.each do |e|
+      obs_date = e.obs_datetime.to_date.strftime("%d-%b-%Y")
+      data_hash[obs_date] = e.value_numeric
+    end
+
+    return data_hash.sort_by{|k, v|k.to_date}
+  end
+
 end
