@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   def index
+    @users = User.all
   end
 
   def login
@@ -15,14 +16,17 @@ class UserController < ApplicationController
   def create
     @message = params[:message]
     @status = params[:success]
+    render :layout => false
   end
 
   def edit
-    @user = User.all
+    @users = User.all
+    render :layout => false
   end
 
   def edit_user
-      @user = User.where(:username => params[:user_name]).first
+    user = User.where(:username => params[:user_name]).first
+    render :text => view_context.edit_user(user)
   end
 
   def delete
@@ -45,11 +49,11 @@ class UserController < ApplicationController
 
   def save
     results = User.create_user(params[:username], params[:password],params[:user_role])
-    redirect_to :action => "create", :message => results.first, :success => results.last
+    render :text => results.to_json
   end
 
   def save_edit
-    User.update_user(params[:user_name_old],params[:username],params[:password],params[:user_role])
-    redirect_to :action => "edit"
+    results = User.update_user(params[:user_name_old],params[:username],params[:password],params[:user_role])
+    render :text => results.to_json
   end
 end
