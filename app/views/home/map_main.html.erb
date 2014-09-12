@@ -2,8 +2,8 @@
 <head>
   <title>SVG</title>
 </head>
-<body onload="resizeMap()" style="margin: 0px; padding: 0px; padding-left: 30px;">
-<div id="main" style="padding: 0px; text-align: center; height: 675px; overflow: hidden;"></div>
+<body onload="resizeMap()" style="margin: 0px; padding: 0px; padding-left: 35px;">
+<div id="main" style="padding: 0px; text-align: center; overflow: hidden !important;"></div>
 
 <script src="/javascripts/d3.js" charset="utf-8"></script>
 <script type="text/javascript">
@@ -20,25 +20,25 @@
           x = -10
           y = -10
 
-          if !site[:x].nil? and !site[:y].nil?
-            if site[:region].downcase == "centre"
+          if !site['x'].nil? and !site['y'].nil?
 
-              x = site[:x].to_i
-              y = site[:y].to_i + 373
+            if site['region'].downcase == "centre"
 
-            elsif site[:region].downcase == "north"
+              x = site['x'].to_i
+              y = site['y'].to_i + 373
 
-              x = site[:x].to_i + 39
-              y = site[:y].to_i
+            elsif site['region'].downcase == "north"
 
-            elsif site[:region].downcase == "south"
+              x = site['x'].to_i + 39
+              y = site['y'].to_i
 
-              x = site[:x].to_i + 212
-              y = site[:y].to_i + 552
+            elsif site['region'].downcase == "south"
+
+              x = site['x'].to_i + 212
+              y = site['y'].to_i + 552
 
             end
           end
-
         %>
 
         d3.select("#region").append("circle")
@@ -46,13 +46,16 @@
                 .style("stroke-width", "1px")
                 .style("fill", "red")
                 .style("margin", "auto")
-                .attr("r", 6)
+                .attr("r", 10)
                 .attr("cx", "<%= x %>")
                 .attr("cy", "<%= y %>")
                 .attr("id", "<%= site['sitecode'].downcase %>")
-                .attr("tag", "<%= site[:name] %>")
+                .attr("tag", "<%= site['name'] %>")
+                .on("mousedown", function(){
+                        alert("Kenneth");
+                })
                 .on("mouseover", function(){
-                    d3.select("#" + this.id).attr("r", 6).style("z-index", "100")
+                    d3.select("#" + this.id).attr("r", 18).style("z-index", "100")
                             .style("fill", "#537ee0");
                     return tooltip.style("visibility", "visible");
                 })
@@ -63,7 +66,7 @@
                             .text(getSiteInfo(this.id));
                 })
                 .on("mouseout", function(){
-                    d3.select("#" + this.id).attr("r", 6).style("z-index", "10")
+                    d3.select("#" + this.id).attr("r", 10).style("z-index", "10")
                             .style("fill", "red");
                     return tooltip.style("visibility", "hidden");
                 });

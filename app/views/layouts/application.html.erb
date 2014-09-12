@@ -7,13 +7,16 @@
 
   </script>
   <style>
+
     .navbar-header{
         font-weight: bold;
     }
+
     .navbar-header img {
-        width: 80px;
-        height: 60px;
-        padding: 5px;
+        width: 60px;
+        height: 43px;
+        padding: 0px;
+        margin: 0px;
     }
     div{
         -moz-user-select:none;
@@ -89,8 +92,8 @@
  </div>
 
     <%= yield%>
- <div class="navbar  navbar-fixed-bottom" style="min-height: 27px !important;
-          text-align: center !important; padding-top: 2px !important; background: #ccc">
+ <div class="navbar  navbar-fixed-bottom" style="min-height: 19px !important; height: 19px;
+          text-align: center !important; padding-top: 0px !important; background: #ccc">
     <%= Date.today.strftime("%Y") %> <a href="http://www.baobabhealth.org" target="_blank">
    Baobab Health Trust</a>
  </div>

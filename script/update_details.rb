@@ -25,11 +25,12 @@ def start
 
     url = "http://#{site.host}:#{site.port}/validation_result/list"
     data = JSON.parse(RestClient.post(url, {:start_date => start_date, :end_date => end_date})) rescue (
-    puts "**** Error when pulling data from site #{key}"
+    puts "**** Error when pulling data from site #{site.name}"
     next
     )
 
     #saves the results
+    puts "Saving results for site #{site.name}"
     record(site,data)
 
     #records the day as the last day on which data was pulled

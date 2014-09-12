@@ -6,7 +6,7 @@
 
   <%= javascript_include_tag("jquery-1.8.2") %>
   <%= javascript_include_tag("highcharts") %>
-  <%= javascript_include_tag("exporting") %>
+  <%#= javascript_include_tag("exporting") %>
 
   <script>
 
@@ -16,7 +16,7 @@
             type: 'line'
         },
         title: {
-            text: 'Aggregate Rule violations Trend'
+            text: ''
         },
 
         xAxis: {
@@ -52,6 +52,6 @@
   </style>
 </head>
 <body>
-  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  <div id="container" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
 </body>
 </html>

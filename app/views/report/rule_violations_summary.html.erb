@@ -5,30 +5,36 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
 
   <style>
+    .rule_name{
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 2%;
+    }
 
+    .total_violations{
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 65%;
+    }
   </style>
 </head>
 <body>
-
-  <div class="table_div">
-    <table class="table table-striped table-hover ">
-      <thead>
-        <tr>
-          <th>Rule</th>
-          <th>Violations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Patients without start reasons</td>
-          <td>9</td>
-        </tr>
-        <tr>
-          <td>Patients without outcomes</td>
-          <td>4</td>
-        </tr>
-      </tbody>
-    </table>
+  <div>
+    <div style="position:relative; margin-top: -4%;">
+      <span class="rule_name">Rule</span>
+      <span class="total_violations">Total violations</span>
+    </div>
+    <div style="position:absolute; height: 88%; overflow: auto; width:100%;">
+      <ul class="list-group">
+        <% @site_errors.each do |rule_name, total_failures| %>
+          <li class="list-group-item">
+            <span class="badge"><%= total_failures %></span>
+            <%= rule_name %>
+          </li>
+  
+        <% end %>
+      </ul>
+    </div>
   </div>
 
 </body>

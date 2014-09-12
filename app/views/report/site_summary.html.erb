@@ -1,4 +1,6 @@
+
 <html>
+
 <head>
   <title>Site summary</title>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
@@ -12,44 +14,62 @@
       left: 2%;
       top: 15%;
     }
+    
     #rule_violation_summary_graph{
-      position: absolute;
+      /*position: absolute;
       width: 42%;
-      height: 30em;
+      height: 45em;*/
     }
+    
     #upper_graph, #lower_graph{
-      /*width: 57em;*/
       position: relative;
       width: 100% !important;
-      height: 23em;
+      height: 22em;
     }
+
+    iframe{
+      border: none;
+    }
+    
+    .site_info{
+      font-size: 14pt;
+      margin-left: 0.2%;
+      width: 99.5%;
+    }
+    
   </style>
 </head>
-<body>
-  <div style="position:absolute; left:2%; width: 98%;">
-    <div>
-
+<body style="margin:0px;padding:0px;overflow:hidden">
+  <div class="site_info">
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <span>Site : <span style="font-weight:bold; font-style: italic;"><%= @site_name rescue nil%></span></span>
+          <span style="margin-left:10%;">Status : <span style="font-weight:bold; font-style: italic;">Urgent</span></span>
+          <span style="margin-left:10%;">Data Valid As Of : <span style="font-weight:bold; font-style: italic;">12, September 2014</span></span>
+      </div>
     </div>
-      <div style="display:table;">
-        <div style="display:table-row">
-            <div style="display: table-cell; ">
-              <div style="">
-                <iframe id="rule_violation_summary_graph" src="/report/rule_violations_summary"></iframe>
+  </div>
+  <div style="position:absolute; height: 76%; width: 100%; overflow: auto;">
+    <iframe id="rule_violation_summary_graph" style="overflow:hidden;height:95%;width:45%;position:absolute;" src="/report/rule_violations_summary"></iframe>
+    <div style="position:absolute; left:2%; width: 98%;">
+
+      <br /><br />
+      <div style="display:table; position: absolute; left:45%;">
+        <div style="display:table-row;">
+          <div style="display: table-cell; width:20%;">
+              <div class="list-group">
+                <a href="#" class="list-group-item active">Aggregate Rule violations Trend</a>
+                <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
               </div>
-            </div>
+              <div class="list-group">
+                <a href="#" class="list-group-item active">You rule here</a>
+                <iframe id="lower_graph" src="/report/rule_violations_graph"></iframe>
+              </div>
+          </div>
         </div>
       </div>
 
-    <div style="display:table; position: absolute; left:45%; top: 50%;">
-      <div style="display:table-row;">
-        <div style="display: table-cell; width:20%;">
-            <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
-            <iframe id="lower_graph" src="/report/patients_without_start_reasons_graph"></iframe>
-        
-        </div>
-      </div>
     </div>
-    
   </div>
 </body>
 </html>
