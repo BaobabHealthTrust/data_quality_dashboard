@@ -51,7 +51,7 @@
       <ul class="list-group">
         <% @site_errors.each do |rule_name, total_failures| %>
           <li class="list-group-item">
-            <span class="badge" onclick="plotGraph('<%= rule_name %>')"><%= total_failures %></span>
+            <span class="badge" onclick="queryRuleViolationSummary('<%= rule_name %>')"><%= total_failures %></span>
             <%= rule_name %>
           </li>
   
