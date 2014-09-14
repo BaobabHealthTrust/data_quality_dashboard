@@ -144,13 +144,11 @@
         </div>
         <div style="position:absolute; height: 170%; overflow: auto; width:100%;">
           <ul class="list-group">
-            <% 3.times do %>
             <% @site_errors.each do |rule_name, total_failures| %>
               <li class="list-group-item">
                 <span class="badge" onclick="queryRuleViolationSummary('<%= rule_name %>')"><%= total_failures %></span>
                 <%= rule_name %>
               </li>
-            <% end %>
             <% end %>
           </ul>
         </div>
