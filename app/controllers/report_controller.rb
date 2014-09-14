@@ -61,5 +61,19 @@ class ReportController < ApplicationController
     @site_name = site.name rescue nil
     render :layout => "application"
   end
-  
+
+  def plot_rule_violations_graph
+    site_name = (params[:site_name])
+    site_id = Site.find_by_name(site_name).id
+    start_date = Date.today - 3.months
+    end_date = Date.today
+    short_name = params[:short_name]
+    definition_id = Definition.find_by_short_name(short_name).id
+    data = {}
+    violation_trends = Observation.rule_violation_trend(site_id, definition_id, start_date, end_date)
+    data["x"] = violation_trends.collect{|k, v|k.to_date.strftime("%d-%b")}
+    data["y"] = violation_trends.collect{|k, v|v}
+    render :json => data and return
+  end
+
 end

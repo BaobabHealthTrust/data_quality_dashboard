@@ -3,6 +3,25 @@
   <title>Rules violation site summary</title>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+  <%= javascript_include_tag("jquery-1.8.2") %>
+  <script>
+    console.log('dd')
+    function plotGraph(rule){
+      jQuery.ajax({
+      type: "POST",
+      url: "/report/plot_rule_violations_graph",
+      data: "short_name=" + rule + "&site_name=<%=params[:site_name]%>",
+      success: function(data){
+        element = window.parent.frames["upper_graph"].parentNode.children[0]
+        element.innerHTML = rule;
+        iframe = window.parent.frames["upper_graph"].parentNode.children[1]
+        iframe.src+='&x=' + data["x"] + '&y=' + data["y"]
+      }
+    });
+    }
+
+   // window.setInterval(function(){alert(window.frames.length)}, 300)
+  </script>
 
   <style>
     .rule_name{
@@ -16,6 +35,10 @@
       font-size: 18px;
       margin-left: 65%;
     }
+
+    .badge{
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -28,7 +51,7 @@
       <ul class="list-group">
         <% @site_errors.each do |rule_name, total_failures| %>
           <li class="list-group-item">
-            <span class="badge"><%= total_failures %></span>
+            <span class="badge" onclick="plotGraph('<%= rule_name %>')"><%= total_failures %></span>
             <%= rule_name %>
           </li>
   

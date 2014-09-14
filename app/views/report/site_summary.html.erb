@@ -50,20 +50,22 @@
     </div>
   </div>
   <div style="position:absolute; height: 76%; width: 100%; overflow: auto;">
-    <iframe id="rule_violation_summary_graph" style="overflow:hidden;height:95%;width:45%;position:absolute;" src="/report/rule_violations_summary"></iframe>
+    <iframe id="rule_violation_summary_graph" style="overflow:hidden;height:95%;width:45%;position:absolute;" src="/report/rule_violations_summary?site_name=<%= @site_name %>"></iframe>
     <div style="position:absolute; left:2%; width: 98%;">
 
       <br /><br />
       <div style="display:table; position: absolute; left:45%;">
         <div style="display:table-row;">
           <div style="display: table-cell; width:20%;">
+              
+              <div class="list-group">
+                <a href="#" class="list-group-item active" id="rule_name">You rule here</a>
+                <iframe id="upper_graph" src="/report/rule_violations_graph?site_name=<%= @site_name %>"></iframe>
+              </div>
+
               <div class="list-group">
                 <a href="#" class="list-group-item active">Aggregate Rule violations Trend</a>
-                <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
-              </div>
-              <div class="list-group">
-                <a href="#" class="list-group-item active">You rule here</a>
-                <iframe id="lower_graph" src="/report/rule_violations_graph"></iframe>
+                <iframe id="lower_graph" src="/report/rule_violations_trend_graph?site_name=<%= @site_name %>"></iframe><br />
               </div>
           </div>
         </div>
