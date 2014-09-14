@@ -18,6 +18,9 @@
       success: function(data){
         xAxis = data["x"];
         yAxis = data["y"];
+        element = document.getElementsByClassName('no_selection')[0];
+        if (element) element.parentNode.removeChild(element);
+        $('.no_selection').removeClass();
         document.getElementById('rule_name').innerHTML = rule;
         plotGraph();
       }
@@ -112,6 +115,15 @@
     .badge{
       cursor: pointer;
     }
+
+    .no_selection{
+      font-weight: bold;
+      left: 63%;
+      margin-top: 10%;
+      position: absolute;
+      z-index: 100;
+    }
+    
   </style>
 </head>
 <body style="margin:0px;padding:0px;overflow:hidden">
@@ -126,18 +138,19 @@
   </div>
   <div style="position:absolute; height: 76%; width: 100%; overflow: auto;">
     <div style="position:absolute; width: 45%; height:80%;">
-        <div style="position:absolute; margin-top: 4%; width: 60%;">
+        <div>
           <span class="rule_name">Rule</span>
           <span class="total_violations">Total violations</span>
         </div>
-        <div style="position:absolute; height: 88%; overflow: auto; width:100%;">
+        <div style="position:absolute; height: 170%; overflow: auto; width:100%;">
           <ul class="list-group">
+            <% 3.times do %>
             <% @site_errors.each do |rule_name, total_failures| %>
               <li class="list-group-item">
                 <span class="badge" onclick="queryRuleViolationSummary('<%= rule_name %>')"><%= total_failures %></span>
                 <%= rule_name %>
               </li>
-
+            <% end %>
             <% end %>
           </ul>
         </div>
@@ -148,7 +161,7 @@
         <div style="display:table-row;">
           <div style="display: table-cell; width:20%;">          
               <div class="list-group">
-                <a href="#" class="list-group-item active" id="rule_name">You rule here</a>
+                <a href="#" class="list-group-item active" id="rule_name">No rule selected</a>
                 <div id="upper_graph">
                   <div id="upper_graph_container"></div>
                 </div>
@@ -161,8 +174,9 @@
           </div>
         </div>
       </div>
-
+      <span class="no_selection">(Nothing is selected)</span>
     </div>
+    
   </div>
 </body>
 </html>
