@@ -58,10 +58,16 @@ DataQualityDashboard::Application.routes.draw do
   get "home/map_main"
   post "home/graph"
 
-  ################### SITE ##############################
+  ################### SITE #############################
 
+  get "site/index"
+  get "site/add_site"
+  get "site/edit_site"
+  get '/map' => "site#map"
+  post "site/save_site"
   post "site/update_current_site"
   get "site/get_current_site"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
