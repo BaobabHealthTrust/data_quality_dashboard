@@ -58,6 +58,7 @@ class ReportController < ApplicationController
     site = Site.find_by_name(site_name)
     @site_name = site.name rescue nil
     @site_errors = Observation.sorted_site_failures(site.id)
+    @latest_date = Observation.latest_site_obs_date(site.id)
     render :layout => "application"
   end
 
