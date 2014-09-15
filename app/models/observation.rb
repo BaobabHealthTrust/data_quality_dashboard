@@ -69,4 +69,11 @@ class Observation < ActiveRecord::Base
     return data_hash.sort_by{|k, v|k.to_date}
   end
 
+  def self.latest_site_obs_date(site_id)
+    latest_date = self.find_by_sql("SELECT max(obs_datetime) as latest_date FROM observations JOIN definitions
+      ON definitions.definition_type = (SELECT definition_type_id FROM definition_types
+      WHERE name = 'Validation rule') WHERE site_id =#{site_id} LIMIT 1").last.latest_date
+    return latest_date
+  end
+  
 end

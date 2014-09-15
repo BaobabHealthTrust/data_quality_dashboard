@@ -11,6 +11,12 @@
   <script>
     var x_axis = []
     var y_axis = []
+    <%  
+      @data['x'] = params[:x].to_a unless params[:x].blank?
+      @data['y'] = params[:y].to_a unless params[:y].blank?
+
+    %>
+      
     <% @data['x'] .each do |x| %>
       x_axis.push('<%= x %>')
     <% end %>

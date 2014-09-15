@@ -5,7 +5,72 @@
   <title>Site summary</title>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
+  
+  
+  <script>
+    var xAxis = [];
+    var yAxis = [];
+    function queryRuleViolationSummary(rule){
+      jQuery.ajax({
+      type: "POST",
+      url: "/report/plot_rule_violations_graph",
+      data: "short_name=" + rule + "&site_name=<%=params[:site_name]%>",
+      success: function(data){
+        xAxis = data["x"];
+        yAxis = data["y"];
+        element = document.getElementsByClassName('no_selection')[0];
+        if (element) element.parentNode.removeChild(element);
+        document.getElementById('rule_name').innerHTML = rule;
+        plotGraph();
+      }
+    });
+    }
+    function plotGraph(){
+        $('#upper_graph_container').highcharts({
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+              formatter: function () {
+                  return 'The value for <b>' + this.x +
+                      '</b> is <b>' + this.y + '</b>';
+              }
+            },
+            legend: {
+                    enabled:false
+            },
+            xAxis: {
+              tickInterval:10,
+              categories: xAxis
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Violations'
+                }
+            },
+            credits: {
+              enabled: false
+            },
 
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        /*enabled: true*/
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: 'Date',
+                data: yAxis
+            }]
+        });
+}
+    
+  </script>
   <style>
     #summary_data{
       position: absolute;
@@ -36,6 +101,36 @@
       margin-left: 0.2%;
       width: 99.5%;
     }
+
+    #upper_graph_container{
+      min-width: 310px; 
+      height: 250px;
+      margin: 0 auto;
+    }
+
+    .rule_name{
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 2%;
+    }
+
+    .total_violations{
+      font-weight: bold;
+      font-size: 18px;
+      margin-left: 65%;
+    }
+
+    .badge{
+      cursor: pointer;
+    }
+
+    .no_selection{
+      font-weight: bold;
+      left: 63%;
+      margin-top: 10%;
+      position: absolute;
+      z-index: 100;
+    }
     
   </style>
 </head>
@@ -45,31 +140,49 @@
       <div class="panel-body">
           <span>Site : <span style="font-weight:bold; font-style: italic;"><%= @site_name rescue nil%></span></span>
           <span style="margin-left:10%;">Status : <span style="font-weight:bold; font-style: italic;">Urgent</span></span>
-          <span style="margin-left:10%;">Data Valid As Of : <span style="font-weight:bold; font-style: italic;">12, September 2014</span></span>
+          <span style="margin-left:10%;">Data Valid As Of : <span style="font-weight:bold; font-style: italic;"><%= @latest_date.to_date.strftime("%d, %B %Y") rescue nil%></span></span>
       </div>
     </div>
   </div>
   <div style="position:absolute; height: 76%; width: 100%; overflow: auto;">
-    <iframe id="rule_violation_summary_graph" style="overflow:hidden;height:95%;width:45%;position:absolute;" src="/report/rule_violations_summary"></iframe>
+    <div style="position:absolute; width: 45%; height:80%;">
+        <div>
+          <span class="rule_name">Rule</span>
+          <span class="total_violations">Total violations</span>
+        </div>
+        <div style="position:absolute; height: 170%; overflow: auto; width:100%;">
+          <ul class="list-group">
+            <% @site_errors.each do |rule_name, total_failures| %>
+              <li class="list-group-item">
+                <span class="badge" onclick="queryRuleViolationSummary('<%= rule_name %>')"><%= total_failures %></span>
+                <%= rule_name %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+    </div>
     <div style="position:absolute; left:2%; width: 98%;">
-
-      <br /><br />
+    
       <div style="display:table; position: absolute; left:45%;">
         <div style="display:table-row;">
-          <div style="display: table-cell; width:20%;">
+          <div style="display: table-cell; width:20%;">          
+              <div class="list-group">
+                <a href="#" class="list-group-item active" id="rule_name">No rule selected</a>
+                <div id="upper_graph">
+                  <div id="upper_graph_container"></div>
+                </div>
+              </div>
+
               <div class="list-group">
                 <a href="#" class="list-group-item active">Aggregate Rule violations Trend</a>
-                <iframe id="upper_graph" src="/report/rule_violations_trend_graph"></iframe><br />
-              </div>
-              <div class="list-group">
-                <a href="#" class="list-group-item active">You rule here</a>
-                <iframe id="lower_graph" src="/report/rule_violations_graph"></iframe>
+                <iframe id="lower_graph" src="/report/rule_violations_trend_graph?site_name=<%= @site_name %>"></iframe><br />
               </div>
           </div>
         </div>
       </div>
-
+      <span class="no_selection">(Nothing is selected)</span>
     </div>
+    
   </div>
 </body>
 </html>

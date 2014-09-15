@@ -50,6 +50,7 @@ DataQualityDashboard::Application.routes.draw do
   get "report/rule_violations_trend_graph"
   get "report/site_summary"
   get "report/rule_violations_graph"
+  post "report/plot_rule_violations_graph"
   ################### HOME ##############################
 
   match '/home' => "home#index"
