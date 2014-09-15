@@ -34,9 +34,7 @@ class ReportController < ApplicationController
     end_date = Date.today
 
     @data = {}
-    violation_trends = Observation.aggregate_rule_violation_trend(site_id, start_date, end_date)
-    @data["x"] = violation_trends.collect{|k, v|k.to_date.strftime("%d-%b")}
-    @data["y"] = violation_trends.collect{|k, v|v}
+    @violation_trends = Observation.aggregate_rule_violation_trend(site_id, start_date, end_date)
     
     render :layout => false
   end

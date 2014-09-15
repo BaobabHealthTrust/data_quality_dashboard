@@ -5,60 +5,43 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css"/>
 
   <%= javascript_include_tag("jquery-1.8.2") %>
+  <%= javascript_include_tag("highstock") %>
   <%= javascript_include_tag("highcharts") %>
+  
   <%#= javascript_include_tag("exporting") %>
 
   <script>
-    var x_axis = []
-    var y_axis = []
-    <% @data['x'] .each do |x| %>
-      x_axis.push('<%= x %>')
+   var data = []
+    <% @violation_trends.each do |key, value|  %>
+        <% d = key.to_date.strftime("%d-%m-%Y").split(/-/)
+          day = (d[0].to_i); month = (d[1].to_i - 1); year = d[2].to_i
+        %>
+          utc_date = Date.UTC(<%= year %>, <%= month%>, <%=day%>);
+          data.push([utc_date, <%= value %>]);
     <% end %>
 
-    <% @data['y'] .each do |y| %>
-      y_axis.push(<%= y %>)
-    <% end %>
+  $(function () {
+    
+      $('#container').highcharts('StockChart', {
 
-    $(function () {
-    $('#container').highcharts({
-        chart: {
-            type: 'spline'
-        },
-        title: {
-            text: ''
-        },
-        tooltip: {
-            formatter: function () {
-                return 'The value for <b>' + this.x +
-                    '</b> is <b>' + this.y + '</b>';
-            }
-        },
-        xAxis: {
-            tickInterval:10,
-            categories: x_axis
-        },
-        yAxis: {
-            title: {
-                text: 'Number of Violations'
-            }
-        },
-        credits: {
-          enabled: false
-        },
+          rangeSelector : {
+              selected : 1,
+              inputEnabled: $('#container').width() > 480
+          },
 
-        plotOptions: {
-            line: {
-                dataLabels: {
-                    /*enabled: true*/
-                },
-                enableMouseTracking: false
-            }
-        },
-        series: [{
-            name: 'Date',
-            data: y_axis
-        }]
-    });
+          title : {
+              text : ''
+          },
+
+          series : [{
+              name : 'Violations',
+              data : data,
+              tooltip: {
+                  valueDecimals: 2
+              }
+          }]
+      });
+
 });
 
   </script>
