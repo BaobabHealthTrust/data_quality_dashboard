@@ -1,11 +1,13 @@
 class SiteController < ApplicationController
 
+  def index
+    @sites = Site.all
+  end
   def add_site
     render :layout => false
   end
 
   def edit_site
-    @sites = Site.all
     render :layout => false
   end
 
@@ -39,7 +41,8 @@ class SiteController < ApplicationController
   end
 
   def save_site
-    return Site.add_site(params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
+    result =  Site.add_site(params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
+    render :text => result.to_json
   end
 
   def update_current_site
@@ -53,5 +56,10 @@ class SiteController < ApplicationController
     site_name = Site.current
     render :text => (Site.current.name rescue "").to_json
 
+  end
+
+  def update_site
+    result =  Site.update_site(params[:site_old],params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
+    render :text => result.to_json
   end
 end

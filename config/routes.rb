@@ -66,6 +66,7 @@ DataQualityDashboard::Application.routes.draw do
   get "site/edit_site"
   get '/map' => "site#map"
   post "site/save_site"
+  post "site/update_site"
   post "site/update_current_site"
   get "site/get_current_site"
 

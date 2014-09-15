@@ -39,6 +39,9 @@
                       '</b> is <b>' + this.y + '</b>';
               }
             },
+            legend: {
+                    enabled:false
+            },
             xAxis: {
               tickInterval:10,
               categories: xAxis
@@ -137,7 +140,7 @@
       <div class="panel-body">
           <span>Site : <span style="font-weight:bold; font-style: italic;"><%= @site_name rescue nil%></span></span>
           <span style="margin-left:10%;">Status : <span style="font-weight:bold; font-style: italic;">Urgent</span></span>
-          <span style="margin-left:10%;">Data Valid As Of : <span style="font-weight:bold; font-style: italic;">12, September 2014</span></span>
+          <span style="margin-left:10%;">Data Valid As Of : <span style="font-weight:bold; font-style: italic;"><%= @latest_date.to_date.strftime("%d, %B %Y") rescue nil%></span></span>
       </div>
     </div>
   </div>

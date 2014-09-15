@@ -108,6 +108,11 @@
             window.parent.document.getElementById("y").value = y;
         }
 
+        if (parent.task == "edit")
+        {
+            window.parent.document.getElementById("xEdit").value = x;
+            window.parent.document.getElementById("yEdit").value = y;
+        }
         var circle = d3.select("#circle");
 
         if(circle[0][0] != null){

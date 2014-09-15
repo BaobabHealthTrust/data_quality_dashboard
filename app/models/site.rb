@@ -29,7 +29,8 @@ class Site < ActiveRecord::Base
   end
 
   def self.add_site(name,code, host, port, region, x, y)
-    if Site.create({:name => name, :code => code, :host => host,:port =>port, :region => region,:x =>  x, :y => y})
+    site = Site.new({:name => name, :code => code, :host => host,:port =>port, :region => region,:x =>  x, :y => y})
+    if site.save
       return ["Site successfully saved", true]
     else
       return ["Site could not be added", nil]
@@ -38,5 +39,21 @@ class Site < ActiveRecord::Base
 
   def add_creator
     self.creator = User.current.id
+  end
+
+  def self.update_site(old_name,name,code, host, port, region, x, y)
+    site = Site.where("name = ?", old_name).first
+    site.name = name
+    site.code = code
+    site.host = host
+    site.port = port
+    site.region = region
+    site.x =  x
+    site.y = y
+    if site.save
+      return ["Site details successfully updated", true]
+    else
+      return ["Site details could not be updated", nil]
+    end
   end
 end
