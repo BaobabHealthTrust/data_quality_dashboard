@@ -23,6 +23,8 @@ class Site < ActiveRecord::Base
        end
     end
 
+    alerts["normal"] = alerts["normal"] +  (Site.find(:all, :select => "name").map(&:name)   - alerts.values.flatten)
+
     return alerts
   end
 

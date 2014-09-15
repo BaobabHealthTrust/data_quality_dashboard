@@ -111,11 +111,14 @@
     var sites = []
     var current_pos = 0;
     var timerHnd;
+    var sleepingTime = 0;
 
     var timerSpacing = 30; // to be in seconds
 
 
-    <% (@sites || []).each do |site| %>
+    <% (@sites || []).each do |site|
+        next if @alerts["normal"].include?(site.name)
+    %>
 
     sites.push('<%= site.name.downcase %>')
     <% end %>
@@ -124,8 +127,9 @@
         return document.getElementById(id);
     }
 
-
     function switchViews(start_point) {
+
+        sleepingTime = (sleepingTime + timerSpacing);
         clearTimeout(timerHnd);
 
         if ((current_pos + 1) >= sites.length) {
@@ -140,7 +144,10 @@
             jQuery("#report-display-dynamic").fadeOut(1700);
             __$("report-display-dynamic").setAttribute("src", "/report/dynamic_view?site=" + sites[current_pos]);
             jQuery("#report-display-dynamic").fadeIn(2000);
-            __$("report-display-static").setAttribute("src", "/report/static_view?site=" + sites[current_pos]);
+
+            if (sleepingTime % (60 * 60 * 1) == 0) { //after 1 hour refresh static panel
+                __$("report-display-static").setAttribute("src", "/report/static_view?site=" + sites[current_pos]);
+            }
         }else{
 
             __$("report-display-dynamic").setAttribute("src", "/report/dynamic_view?site=" + sites[current_pos]);

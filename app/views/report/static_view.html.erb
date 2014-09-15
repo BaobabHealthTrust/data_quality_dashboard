@@ -11,21 +11,20 @@
 
       .large {
           font-size: 1.35em;
-          color: lightgray !important;
        }
 
       .panel-heading{
+          background-color: #2fa4e7 !important;
+          color: white !important;
+      }
 
-      }
-      .panel-body{
-          font-size: 1.15em !important;
-          padding: 3px !important;
-          padding-left: 30px !important;
-      }
       .panel{
           margin: 3%;
           margin-top: 0%;
           width: 88%;
+      }
+      #report-display{
+          min-height: 210px;
       }
   </style>
 </head>
@@ -34,19 +33,14 @@
   <div class="panel-heading">
     <h1 class="panel-title large">Sites Requiring Urgent Attention</h3>
   </div>
-  <%
-         (@priority_sites.keys[0 .. 7] || []).each do |site|%>
-  <div class="panel-body">
-    <%= site%>
-  </div>
-  <% end %>
+        <iframe scrolling="no" id="report-display" src = "/report/sites_summary_graph" style="width: 100%;border: none;" ></iframe>
 </div>
 
 <script type="text/javascript">
     function resize(){
 
         var panel = document.getElementsByClassName("panel")[0];
-        panel.style.minHeight = (0.72 * window.innerHeight) + "px";
+        //panel.style.minHeight = (0.72 * window.innerHeight) + "px";
     }
 </script>
 

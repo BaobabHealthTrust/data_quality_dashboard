@@ -1,0 +1,142 @@
+<%=javascript_include_tag "Highcharts/jquery-1.11.0.min"%>
+<%=javascript_include_tag "Highcharts/highcharts"%>
+<%=javascript_include_tag "Highcharts/exporting"%>
+
+<script type="text/javascript">
+
+   var sites = [];
+   var data = {};
+   var alerts = {};
+
+   <% @sites.each do |key, value|%>
+
+        data["<%= key.strip%>"] = "<%= value%>"
+   <%end%>
+
+
+   <% @sites.sort_by {|k, v| v}.reverse.each do |key|%>
+        sites.push("<%= key[0].strip%>")
+   <% end %>
+
+   <% @alerts.each do |key, arr|
+
+    arr.each do |site|%>
+        alerts["<%= site.strip%>"] = "<%= key%>"
+   <%
+   end
+   end%>
+
+    var max = parseInt("<%= @sites.values.max rescue 200%>");
+
+    var interval = max/10;
+
+    <% if !@sites.blank? %>
+            data = "<%= @sites.to_json%>"
+    <%end%>
+
+    $(function () {
+        $('#holder').highcharts({
+            chart: {
+                type: 'bar',
+                borderWidth: 1,
+                plotBorderWidth: 1,
+                // Edit chart spacing
+                spacingBottom: 15,
+                spacingTop: 10,
+                spacingLeft: 10,
+                spacingRight: 10,
+                // Explicitly tell the width and height of a chart
+                height: (window.innerHeight - 10)
+            },
+            title: {
+                style: {
+                    fontFamily: "'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif",
+                    fontSize: '14px'
+                },
+                text: ''
+            },
+            xAxis: {
+                categories: sites,
+                title: {
+                    text: null,
+                    style: {
+                        font: "12px 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif"
+                    }
+
+                },
+                labels: {
+                    style: {
+                        color: '#000000',
+                        font: "12px Arial, 'Helvetica Neue', Helvetica, sans-serif;"
+                    },
+                    formatter: function () {
+
+                            return '<span style="fill: black; font-size: 1.3em;">' + this.value + '</span>';
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                max: max,
+                tickInterval: interval,
+                title: {
+                    text: 'Total data errors',
+                    align: 'high',
+                    style: {
+                        font: "13px 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif"
+                    }
+                },
+                labels: {
+                    overflow: 'justify',
+                    style: {
+                        color: '#000000',
+                        font: "13px 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif"
+                    }
+                }
+            },
+            tooltip: {
+                shared: true,
+                useHTML: true,
+                valueSuffix: ' ',
+                formatter: function() {
+
+                    return (this.x + " : " + this.y + " errors");
+                }
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: dataG(),
+            exporting: { enabled: false }
+
+
+        });
+    });
+
+    function dataG() {
+        var correctedWeights = [];
+
+        <% (@sites.sort_by {|k, v| v}.reverse || [])[0 .. 5].each do |data| %>
+        var val = parseFloat(<%= data[1] %>);
+        //var col = (val >= 100) ? '#c71c22' : (val > 0 ? '#dd5600' : '#3cb521');
+        var col = '#dd5600';
+        correctedWeights.push({y: val, color: col});
+        <% end %>
+
+
+        return [{name: 'Sites summary', showInLegend: false, data: correctedWeights, pointWidth: 20}];
+    }
+
+</script>
+
+
+<div id="holder" style="width: 100%;">
+
+</div>

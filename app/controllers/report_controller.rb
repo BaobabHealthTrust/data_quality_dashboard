@@ -77,4 +77,11 @@ class ReportController < ApplicationController
     render :json => data and return
   end
 
+  def sites_summary_graph
+
+    @sites = Observation.sorted_sites_failures
+    @alerts = Site.alerts
+    render :layout => false
+  end
+
 end

@@ -27,11 +27,11 @@
 
       .large {
           font-size: 1.4em;
-          color: lightgray !important;
       }
 
       .panel-heading{
-
+          background-color: #2fa4e7 !important;
+          color: white !important
       }
       .panel-label {
          padding-left: 30px !important;
@@ -45,6 +45,12 @@
           font-size: 0.73em !important;
           min-width: 60px;
       }
+          .mute{
+              margin-top: 10%;
+              margin-left: 10%;
+              color: gray;
+              font-style: italic;
+          }
   </style>
 </head>
 <body onload="resize()">
@@ -52,6 +58,8 @@
   <div class="panel-heading">
     <h3 class="panel-title large"><%= @site_name%></h3>
   </div>
+
+   <%  if @site_errors.length > 0 %>
   <table class="table table-condensed">
 
     <tbody>
@@ -63,6 +71,9 @@
     <% end %>
     </tbody>
   </table>
+   <% else %>
+       <h3 class="mute"> No data available for <%= @site_name%> </h3>
+   <% end %>
 
   </div>
 <script type="text/javascript">
