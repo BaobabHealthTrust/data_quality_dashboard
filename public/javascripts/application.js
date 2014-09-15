@@ -5,8 +5,7 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery_ujs
-//= require twitter/bootstrap
+
 //= require_tree .
 
 
@@ -62,4 +61,8 @@ function highlight(id, conditional){
         }
 
     }
+}
+
+function isInt(n){
+    return typeof n== "number" && isFinite(n) && n%1===0;
 }
