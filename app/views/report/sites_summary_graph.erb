@@ -28,7 +28,7 @@
 
     var max = parseInt("<%= @sites.values.max rescue 200%>");
 
-    var interval = max/10;
+    var interval = parseInt(max/10);
 
     <% if !@sites.blank? %>
             data = "<%= @sites.to_json%>"
@@ -124,7 +124,7 @@
         var correctedWeights = [];
 
         <% (@sites.sort_by {|k, v| v}.reverse || [])[0 .. 5].each do |data| %>
-        var val = parseFloat(<%= data[1] %>);
+        var val = parseInt(<%= data[1] %>);
         //var col = (val >= 100) ? '#c71c22' : (val > 0 ? '#dd5600' : '#3cb521');
         var col = '#dd5600';
         correctedWeights.push({y: val, color: col});
