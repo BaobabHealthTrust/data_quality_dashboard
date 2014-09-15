@@ -20,7 +20,6 @@
         yAxis = data["y"];
         element = document.getElementsByClassName('no_selection')[0];
         if (element) element.parentNode.removeChild(element);
-        $('.no_selection').removeClass();
         document.getElementById('rule_name').innerHTML = rule;
         plotGraph();
       }
@@ -34,9 +33,15 @@
             title: {
                 text: ''
             },
-
+            tooltip: {
+              formatter: function () {
+                  return 'The value for <b>' + this.x +
+                      '</b> is <b>' + this.y + '</b>';
+              }
+            },
             xAxis: {
-                categories: xAxis
+              tickInterval:10,
+              categories: xAxis
             },
             yAxis: {
                 title: {

@@ -27,8 +27,14 @@
         title: {
             text: ''
         },
-
+        tooltip: {
+            formatter: function () {
+                return 'The value for <b>' + this.x +
+                    '</b> is <b>' + this.y + '</b>';
+            }
+        },
         xAxis: {
+            tickInterval:10,
             categories: x_axis
         },
         yAxis: {
