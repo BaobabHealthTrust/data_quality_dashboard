@@ -10,7 +10,7 @@
       }
 
       .large {
-          font-size: 1.8em;
+          font-size: 1.35em;
           color: lightgray !important;
        }
 
@@ -18,8 +18,8 @@
 
       }
       .panel-body{
-          font-size: 1.6em !important;
-          padding: 2px !important;
+          font-size: 1.15em !important;
+          padding: 3px !important;
           padding-left: 30px !important;
       }
       .panel{
@@ -34,7 +34,8 @@
   <div class="panel-heading">
     <h1 class="panel-title large">Sites Requiring Urgent Attention</h3>
   </div>
-  <%(@priority_sites.keys[0 .. 5] || []).each do |site|%>
+  <%
+         (@priority_sites.keys[0 .. 7] || []).each do |site|%>
   <div class="panel-body">
     <%= site%>
   </div>

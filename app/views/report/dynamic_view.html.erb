@@ -18,7 +18,7 @@
       }
 
       td {
-          font-size: 1.3em !important;
+          font-size: 1.0em !important;
       }
 
       .num{
@@ -26,7 +26,7 @@
       }
 
       .large {
-          font-size: 1.8em;
+          font-size: 1.4em;
           color: lightgray !important;
       }
 
@@ -42,7 +42,7 @@
           width: 88%;
       }
       .badge{
-          font-size: 0.72em !important;
+          font-size: 0.73em !important;
           min-width: 60px;
       }
   </style>
@@ -55,7 +55,7 @@
   <table class="table table-condensed">
 
     <tbody>
-    <% (@site_errors[0 .. 6] || @site_errors || []).each do |rule, n|%>
+    <% ( @site_errors[0 .. 7] || @site_errors || []).each do |rule, n|%>
         <tr>
           <td class="panel-label"><%= rule%></td>
           <td class="num"><span class="badge"><%= n%></span></td>
