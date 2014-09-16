@@ -18,7 +18,7 @@
       }
 
       td {
-          font-size: 1.3em !important;
+          font-size: 1.0em !important;
       }
 
       .num{
@@ -26,12 +26,12 @@
       }
 
       .large {
-          font-size: 1.8em;
-          color: lightgray !important;
+          font-size: 1.4em;
       }
 
       .panel-heading{
-
+          background-color: #2fa4e7 !important;
+          color: white !important
       }
       .panel-label {
          padding-left: 30px !important;
@@ -42,9 +42,15 @@
           width: 88%;
       }
       .badge{
-          font-size: 0.72em !important;
+          font-size: 0.73em !important;
           min-width: 60px;
       }
+          .mute{
+              margin-top: 10%;
+              margin-left: 10%;
+              color: gray;
+              font-style: italic;
+          }
   </style>
 </head>
 <body onload="resize()">
@@ -52,10 +58,12 @@
   <div class="panel-heading">
     <h3 class="panel-title large"><%= @site_name%></h3>
   </div>
+
+   <%  if @site_errors.length > 0 %>
   <table class="table table-condensed">
 
     <tbody>
-    <% (@site_errors[0 .. 6] || @site_errors || []).each do |rule, n|%>
+    <% ( @site_errors[0 .. 7] || @site_errors || []).each do |rule, n|%>
         <tr>
           <td class="panel-label"><%= rule%></td>
           <td class="num"><span class="badge"><%= n%></span></td>
@@ -63,6 +71,9 @@
     <% end %>
     </tbody>
   </table>
+   <% else %>
+       <h3 class="mute"> No data available for <%= @site_name%> </h3>
+   <% end %>
 
   </div>
 <script type="text/javascript">

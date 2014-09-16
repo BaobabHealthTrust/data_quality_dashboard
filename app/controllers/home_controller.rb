@@ -4,6 +4,7 @@ class HomeController < ApplicationController
 
     @sites = Site.all
     @alerts = Site.alerts
+
   end
 
   def map_main
@@ -20,6 +21,8 @@ class HomeController < ApplicationController
 
       @sites << site
     end
+    @sites_errors = Observation.sorted_sites_failures
+    @alerts = Site.alerts;
     render :layout => false
   end
 

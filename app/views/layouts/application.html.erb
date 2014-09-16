@@ -49,9 +49,9 @@
   </div>
   <div class="navbar-collapse collapse navbar-responsive-collapse">
     <ul class="nav navbar-nav">
-      <li ><a  style="font-size: 1.1em; color: lightgray; text-decoration: underline;" href="/">Home</a></li>
+      <li ><a  style="font-size: 1.1em; color: lightgray;" href="/">Home</a></li>
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 1.1em; color: lightgray; text-decoration: underline;">Admin<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 1.1em; color: lightgray;">Admin<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="/user/index">User Management</a></li>
           <li><a href="/site/index">Site Management</a></li>
@@ -61,23 +61,18 @@
 
     <ul class="nav navbar-nav navbar-right">
       <li><div class="navbar-brand" style="font-size: 1.1em; color: lightgray;">logged in as <b><%= User.find(session[:user_id]).username%></b></div></li>
-      <li><a  style="font-size: 1.1em; color: lightgray; text-decoration: underline;" href="/user/logout">logout</a></li>
+      <li><a  style="font-size: 1.1em; color: lightgray;" href="/user/logout">logout</a></li>
     </ul>
   </div>
  </div>
 
     <%= yield%>
- <div class="navbar-fixed-bottom" style="min-height: 19px !important; height: 19px;
-          text-align: center !important; padding-top: 0px !important; background: #ccc">
-    <%= Date.today.strftime("%Y") %> <a href="http://www.baobabhealth.org" target="_blank">
+ <div class="navbar-fixed-bottom" style="min-height: 19px !important; height: 19px; color: white; font-size: 0.95em;
+          text-align: center !important; padding-top: 0px !important; background: #033c73">
+    <%= Date.today.strftime("%Y") %> <a style="color: white; font-weight: normal;" href="http://www.baobabhealth.org" target="_blank">
    Baobab Health Trust</a>
  </div>
 
-
- <script src="/javascripts/jquery.js"></script>
- <script src="/javascripts/bootstrap.js"> </script>
- <script src="/javascripts/bootswatch.js"> </script>
- <script src="/javascripts/application.js"></script>
 
  <% if !flash[:notice].nil? %>
 

@@ -11,6 +11,19 @@
 
     var zoomlevel = 1;
     var currentSite = "";
+    var alerts = {};
+    var sitesErrors = {};
+
+    <% @alerts.each do |key, arr|%>
+         <%arr.each do |val|%>
+            alerts["<%= val%>"] = "<%= key%>"
+         <%end%>
+    <%end%>
+
+    <% @sites_errors.each do |site|%>
+        sitesErrors["<%= site[0].strip%>"] = "<%= site[1]%>";
+    <% end %>
+
     var loader = d3.xml("/images/mw.svg", function(xml) {
         document.getElementById("main").appendChild(xml.documentElement);
 
@@ -42,15 +55,25 @@
           end
         %>
 
+        var color = "green";
+        if(alerts[ "<%= site['name']%>"] == "normal"){
+            color = "green";
+        }else if (alerts[ "<%= site['name']%>"] == "average"){
+            color = "yellow";
+        }else if (alerts[ "<%= site['name']%>"] == "urgent") {
+            color = "red";
+        }
+
         d3.select("#region").append("circle")
                 .style("stroke", "white")
                 .style("stroke-width", "1px")
-                .style("fill", "red")
+                .style("fill", color)
                 .style("margin", "auto")
                 .attr("r", 10)
                 .attr("class", "circle")
                 .attr("cx", "<%= x %>")
                 .attr("cy", "<%= y %>")
+                .attr("color", color)
                 .attr("id", "<%= site['sitecode'].downcase %>")
                 .attr("tag", "<%= site['name'] %>")
                 .on("mousedown", function(){
@@ -59,8 +82,8 @@
                 .on("mouseover", function(){
 
                     d3.select(".circle").attr("r", 10);
-                    d3.select("#" + this.id).attr("r", 18).style("z-index", "100")
-                            .style("fill", "#537ee0");
+                    d3.select("#" + this.id).attr("r", 18).style("z-index", "100");
+
                     return tooltip.style("visibility", "visible");
                 })
                 .on("mousemove", function(){
@@ -71,7 +94,7 @@
                 })
                 .on("mouseout", function(){
                     d3.select("#" + this.id).attr("r", 10).style("z-index", "10")
-                            .style("fill", "red");
+                            .style("fill", this.getAttribute("color"));
                     return tooltip.style("visibility", "hidden");
                 });
 
@@ -94,6 +117,11 @@
 
         if(document.getElementById(id)){
             result = document.getElementById(id).getAttribute("tag");
+            if (sitesErrors[result]){
+                result = result + ",   " + sitesErrors[result] + " error(s)";
+            }else{
+                result = result + ",  0 error(s)";
+            }
         }
 
         return result;
@@ -121,10 +149,10 @@
             }
         })
 
-        setTimeout("updateSite()", 500);
+        setTimeout("updateSite()", 1500);
     }
 
-        setTimeout("updateSite()", 500);
+        setTimeout("updateSite()", 1500);
 
 </script>
 
