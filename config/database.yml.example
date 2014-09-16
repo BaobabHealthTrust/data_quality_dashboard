@@ -1,7 +1,7 @@
 
 development:
   adapter: mysql
-  database: drug_mgmt
+  database: data_quality
   username: root
   password: password
   host: localhost
@@ -9,7 +9,7 @@ development:
 
 production:
   adapter: mysql
-  database: drug_mgmt
+  database: data_quality
   username: root
   password: password
   host: localhost
