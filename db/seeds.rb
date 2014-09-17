@@ -1,12 +1,5 @@
 puts "Loading defaults"
 
-puts "Creating default user"
-
-if User.find_by_username("admin").blank?
-  user = User.create({:username => "admin", :password => "test"})
-else
-  puts "User :  'admin' already exists"
-end
 
 puts "Creating default definitions types"
 definition_types = ["Validation rule"]
@@ -29,4 +22,14 @@ roles =[["Administrator", "This is the system administrator who handles all syst
   else
     puts "Role : #{role[0]} already exists"
   end
+end
+
+puts "Creating default user"
+
+if User.find_by_username("admin").blank?
+  user = User.create({:username => "dqd_admin", :password => "dqd_admin_default"})
+  UserRole.create({:user_id => user.id, :role_id => Role.find_by_role("Administrator").id})
+  puts "Default User Created. Username : dqd_admin ,  Password: dqd_admin_default"
+else
+  puts "User :  'admin' already exists"
 end
