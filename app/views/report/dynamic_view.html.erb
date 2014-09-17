@@ -72,7 +72,11 @@
     </tbody>
   </table>
    <% else %>
-       <h3 class="mute"> No data available for <%= @site_name%> </h3>
+       <% if @site_name.blank?%>
+        <h3 class="mute"> No data available </h3>
+       <% else %>
+        <h3 class="mute"> No data available for <%= @site_name%> </h3>
+       <%end%>
    <% end %>
 
   </div>

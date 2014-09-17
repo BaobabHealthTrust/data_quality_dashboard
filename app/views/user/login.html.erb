@@ -4,6 +4,10 @@
   <script src="/javascripts/jquery.alerts.js"></script>
   <link href="/stylesheets/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
   <link href="/stylesheets/login.css" rel="stylesheet" type="text/css" media="screen" />
+
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootswatch.css" />
+
 <script type="text/javascript">
   <!--
   function verify()
@@ -13,11 +17,15 @@
 
       if (username.trim() == "" )
       {
-          jAlert("Username can not be blank", "Incomplete Information");
+          var node = document.getElementById("alert")
+          node.innerHTML = "Username cannot be blank";
+          node.style.display = "block";
       }
       else if (password.trim() == "" )
       {
-          jAlert("Password can not be blank", "Incomplete Information");
+          var node = document.getElementById("alert")
+          node.innerHTML = "Password cannot be blank";
+          node.style.display = "block";
       }
       else
       {
@@ -30,7 +38,10 @@
 
               },
               error: function(){
-                  jAlert("Username and password did not match", "Invalid Credentials");
+
+                  var node = document.getElementById("alert")
+                  node.innerHTML = "Invalid Credentials";
+                  node.style.display = "block";
               }
 
           });
@@ -39,11 +50,21 @@
   //-->
 </script>
 <style type="text/css">
+    .header{
+        margin-left: 38.5%;
+        font-size: 2em;
+        color: black;
+    }
+   .alert{
+       display: none;
+   }
+
 
 </style>
 </head>
 
 <body style="background-color: #0A4958; ">
+<label class="header" for="name">Data Quality Dashboard</label>
 <div id="container">
 
     <label for="name">Username:</label>
@@ -55,11 +76,17 @@
     <input id = "password" type="password">
 
     <div class = "lower" >
-
-           <input onmousedown = "verify()" type="submit" value="Login">
-
+            <table class="table">
+              <td>
+                <div id="alert" class="alert alert-dismissable alert-danger">
+                    Invalid Credentials
+                </div>
+              </td>
+              <td>
+                <input onmousedown = "verify()" type="submit" value="Login">
+              </td>
+            </table>
     </div>
-
 
 </div>
 
