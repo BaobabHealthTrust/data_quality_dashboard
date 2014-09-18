@@ -15,9 +15,14 @@
       type: "POST",
       url: "/report/plot_rule_violations_graph",
       data: "short_name=" + rule + "&site_name=<%=params[:site_name]%>",
-      success: function(data){
-        xAxis = data["x"];
-        yAxis = data["y"];
+      success: function(results){
+        data_set = []
+        for (i = 0; i < results["x"].length; i ++)
+        {
+          temp_date = new Date(results["x"][i])
+          console.log(temp_date)
+          data_set.push([Date.UTC(temp_date.getFullYear(), temp_date.getMonth() + 1, temp_date.getDate()), results["y"][i]]);
+        }
         element = document.getElementsByClassName('no_selection')[0];
         if (element) element.parentNode.removeChild(element);
         document.getElementById('rule_name').innerHTML = rule;
@@ -35,16 +40,19 @@
             },
             tooltip: {
               formatter: function () {
-                  return 'The value for <b>' + this.x +
-                      '</b> is <b>' + this.y + '</b>';
+                  return '<b> Date : </b>' + this.x + "<br/> <b> Anomalies : </b>" + this.y;
+
               }
             },
             legend: {
                     enabled:false
             },
             xAxis: {
-              tickInterval:10,
-              categories: xAxis
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                }
             },
             yAxis: {
                 title: {
@@ -65,7 +73,7 @@
             },
             series: [{
                 name: 'Date',
-                data: yAxis
+                data: data_set
             }]
         });
 }
