@@ -43,8 +43,9 @@ class UserController < ApplicationController
       user = User.find_by_username(params[:username])
       session[:user_id] = user.id
       User.current = user
-      redirect_to :controller => :home
     end
+
+    render :text => state.to_json
   end
 
   def save
