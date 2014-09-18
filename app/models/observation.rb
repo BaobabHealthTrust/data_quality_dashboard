@@ -15,9 +15,7 @@ class Observation < ActiveRecord::Base
                                                         FROM definition_types WHERE name = 'Validation rule')
 
                                             WHERE ob.obs_datetime = (
-                                                    SELECT max(obs_datetime) FROM observations JOIN definitions
-                                                    ON definitions.definition_type = (SELECT definition_type_id
-                                                        FROM definition_types WHERE name = 'Validation rule')
+                                                    SELECT DATE(max(pulled_datetime)) FROM pull_trackers
                                                     WHERE site_id = ? LIMIT 1
                                               ) AND ob.site_id = ?", site_id, site_id]
     ).inject({}){|result, obj| result[obj.short_name] = obj.value_numeric; result}.sort_by {|k, v| v}.reverse
@@ -33,9 +31,7 @@ class Observation < ActiveRecord::Base
                                                         FROM definition_types WHERE name = 'Validation rule')
 
                                                   AND ob.obs_datetime = (
-                                                    SELECT max(obs_datetime) FROM observations JOIN definitions
-                                                    ON definitions.definition_type = (SELECT definition_type_id
-                                                        FROM definition_types WHERE name = 'Validation rule')
+                                                    SELECT DATE(max(pulled_datetime)) FROM pull_trackers
                                                     WHERE site_id = ob.site_id LIMIT 1
                                               )
                                               GROUP BY ob.site_id").inject({}){|r, data| r[Site.find(data.site_id).name] = data.sum.to_i; r}
