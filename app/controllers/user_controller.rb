@@ -4,7 +4,7 @@ class UserController < ApplicationController
   end
 
   def login
-    render :layout => false
+    #render :layout => false
   end
 
   def logout

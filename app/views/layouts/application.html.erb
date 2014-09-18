@@ -47,6 +47,7 @@
     <img class="navbar-brand" src="/images/app.png"/>
     <div class="navbar-brand" style="color: lightgray;">Quality Monitoring Dashboard</div>
   </div>
+   <% if !session[:user_id].blank?%>
   <div class="navbar-collapse collapse navbar-responsive-collapse" >
     <ul class="nav navbar-nav">
       <li ><a  style="font-size: 1.1em; color: lightgray;" href="/">Home</a></li>
@@ -66,6 +67,7 @@
       <li><a  style="font-size: 1.1em; color: lightgray;" href="/user/logout">logout</a></li>
     </ul>
   </div>
+       <% end %>
  </div>
 
     <%= yield%>
