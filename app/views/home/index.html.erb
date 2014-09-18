@@ -158,16 +158,24 @@
     }
 
     function resizeTable() {
-        __$("main").style.height = (window.innerHeight - 90) + "px";
 
-        __$("main-display").style.height = (window.innerHeight - 153) + "px";
+        __$("main").style.height = (window.innerHeight - 90) + "px";
+        __$("report-display-static").style.width = (screen.width * 0.645) + "px";
+        __$("report-display-dynamic").style.width = (screen.width * 0.65) + "px";
         __$("main-display").style.width = (screen.width * 0.345) + "px";
 
-        __$("report-display-dynamic").style.height = (0.45 * window.innerHeight) + "px";
-        __$("report-display-dynamic").style.width = (screen.width * 0.65) + "px";
+        <% if ((params[:dashboard].to_s == "true") rescue false)%>
 
-        __$("report-display-static").style.height = (0.5 * window.innerHeight) + "px";
-        __$("report-display-static").style.width = (screen.width * 0.645) + "px";
+            __$("main-display").style.height = (window.innerHeight - 60) + "px";
+            __$("report-display-dynamic").style.height = (0.55 * window.innerHeight) + "px";
+            __$("report-display-static").style.height = (0.5 * window.innerHeight) + "px";
+            __$("report-display-static").style.paddingTop = "25px"
+        <% else %>
+
+            __$("main-display").style.height = (window.innerHeight - 153) + "px";
+            __$("report-display-dynamic").style.height = (0.45 * window.innerHeight) + "px";
+            __$("report-display-static").style.height = (0.5 * window.innerHeight) + "px";
+            <% end %>
     }
     //-->
 </script>
