@@ -20,8 +20,7 @@
         for (i = 0; i < results["x"].length; i ++)
         {
           temp_date = new Date(results["x"][i])
-          console.log(temp_date)
-          data_set.push([Date.UTC(temp_date.getFullYear(), temp_date.getMonth() + 1, temp_date.getDate()), results["y"][i]]);
+          data_set.push([Date.UTC(temp_date.getFullYear(), temp_date.getMonth() , temp_date.getDate()), results["y"][i]]);
         }
         element = document.getElementsByClassName('no_selection')[0];
         if (element) element.parentNode.removeChild(element);
@@ -39,10 +38,8 @@
                 text: ''
             },
             tooltip: {
-              formatter: function () {
-                  return '<b> Date : </b>' + this.x + "<br/> <b> Anomalies : </b>" + this.y;
-
-              }
+                headerFormat: '<b>{series.name}</b><br>',
+                pointFormat: 'Date: {point.x:%e %b %Y} <br> Errors :{point.y:.0f} '
             },
             legend: {
                     enabled:false
@@ -72,7 +69,7 @@
                 }
             },
             series: [{
-                name: 'Date',
+                name: 'Rule Violation Trend',
                 data: data_set
             }]
         });
