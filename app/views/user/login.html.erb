@@ -31,8 +31,18 @@
           jQuery.ajax({
               url:  "/user/verify_user?password=" + password + "&username=" + username ,
               type:"POST",
-              success: function(){
-                  window.location = "/"
+              success: function(result){
+                  outcome = JSON.parse(result)
+                  if (outcome)
+                  {
+                      window.location = "/"
+                  }
+                  else
+                  {
+                      var node = document.getElementById("alert")
+                      node.innerHTML = "Invalid Credentials";
+                      node.style.display = "block";
+                  }
 
               },
               error: function(){
