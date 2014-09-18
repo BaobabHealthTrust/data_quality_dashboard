@@ -37,9 +37,12 @@
          padding-left: 30px !important;
       }
       .panel{
-          margin: 3%;
+          margin: 1%;
+          margin-left: 5%;
           margin-top: 0%;
+          padding-bottom: 0%;
           width: 88%;
+          height: 100%;
       }
       .badge{
           font-size: 0.73em !important;
@@ -56,14 +59,14 @@
 <body onload="resize()">
  <div class="panel panel-warning">
   <div class="panel-heading">
-    <h3 class="panel-title large"><%= @site_name%></h3>
+    <h3 class="panel-title large">&nbsp;<%= @site_name%></h3>
   </div>
 
    <%  if @site_errors.length > 0 %>
   <table class="table table-condensed">
 
     <tbody>
-    <% ( @site_errors[0 .. 7] || @site_errors || []).each do |rule, n|%>
+    <% (( @site_errors[0 .. 8] || @site_errors || [])).each do |rule, n|%>
         <tr>
           <td class="panel-label"><%= rule%></td>
           <td class="num"><span class="badge"><%= n%></span></td>

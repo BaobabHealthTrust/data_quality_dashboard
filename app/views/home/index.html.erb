@@ -92,12 +92,12 @@
       <table>
         <tr>
           <td>
-            <iframe scrolling="no" id="report-display-dynamic" style="border: none;overflow: auto;"></iframe>
+            <iframe scrolling="no" id="report-display-dynamic" style="border: none;"></iframe>
           </td>
         </tr>
           <tr>
           <td>
-            <iframe scrolling="no"  id="report-display-static" style="border: none;overflow: auto;"></iframe>
+            <iframe  scrolling="no" id="report-display-static" style="border: none;"></iframe>
           </td>
         </tr>
       </table>
@@ -166,16 +166,17 @@
 
         <% if ((params[:dashboard].to_s == "true") rescue false)%>
 
-            __$("main-display").style.height = (window.innerHeight - 60) + "px";
-            __$("report-display-dynamic").style.height = (0.55 * window.innerHeight) + "px";
-            __$("report-display-static").style.height = (0.5 * window.innerHeight) + "px";
-            __$("report-display-static").style.paddingTop = "25px"
+            __$("main-display").style.height = (window.innerHeight - 80) + "px";
+            __$("report-display-dynamic").style.height = (0.5 * window.innerHeight) + "px";
+            __$("report-display-static").style.height = (0.48 * window.innerHeight) + "px";
+
         <% else %>
 
             __$("main-display").style.height = (window.innerHeight - 153) + "px";
             __$("report-display-dynamic").style.height = (0.45 * window.innerHeight) + "px";
-            __$("report-display-static").style.height = (0.5 * window.innerHeight) + "px";
-            <% end %>
+            __$("report-display-static").style.height = (0.45 * window.innerHeight) + "px";
+        <% end %>
+
     }
     //-->
 </script>

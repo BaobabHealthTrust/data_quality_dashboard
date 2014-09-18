@@ -12,6 +12,8 @@ class ReportController < ApplicationController
   def static_view
 
     @priority_sites = Observation.sorted_sites_failures
+    @sites = Observation.sorted_sites_failures
+    @alerts = Site.alerts
     render :layout => false
   end
 
@@ -78,8 +80,7 @@ class ReportController < ApplicationController
 
   def sites_summary_graph
 
-    @sites = Observation.sorted_sites_failures
-    @alerts = Site.alerts
+
     render :layout => false
   end
 
