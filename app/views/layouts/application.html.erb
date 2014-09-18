@@ -36,7 +36,7 @@
 </head>
 
 <body style="padding-top: 0px !important">
- <div class="navbar navbar-default">
+ <div class="dynamic navbar navbar-default">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
       <span class="icon-bar"></span>
@@ -69,32 +69,23 @@
  </div>
 
     <%= yield%>
- <div class="navbar-fixed-bottom" style="min-height: 19px !important; height: 19px; color: white; font-size: 0.95em;
+ <div class="dynamic navbar-fixed-bottom" style="min-height: 19px !important; height: 19px; color: white; font-size: 0.95em;
           text-align: center !important; padding-top: 0px !important; background: #033c73">
     <%= Date.today.strftime("%Y") %> <a style="color: white; font-weight: normal;" href="http://www.baobabhealth.org" target="_blank">
    Baobab Health Trust</a>
  </div>
 
-
- <% if !flash[:notice].nil? %>
-
     <script type="text/javascript">
-        <!--
 
-        setTimeout("alert('<%= flash[:notice] %>')", 500);
+        <% if ((params[:dashboard].to_s == "true") rescue false)%>
 
-        //-->
+        var nodes = document.getElementsByClassName("dynamic");
+        for (var i = 0; i < nodes.length; i ++){
+
+            jQuery(nodes[i]).hide()
+        }
+        <% end %>
     </script>
 
-<% elsif !flash[:error].nil? %>
-
-    <script type="text/javascript">
-        <!--
-
-        setTimeout("alert('<%= flash[:error] %>')", 10);
-
-        //-->
-    </script>
- <% end%>
 </body>
 </html>
