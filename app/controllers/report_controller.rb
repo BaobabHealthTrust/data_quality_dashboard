@@ -73,7 +73,7 @@ class ReportController < ApplicationController
     definition_id = Definition.find_by_short_name(short_name).id
     data = {}
     violation_trends = Observation.rule_violation_trend(site_id, definition_id, start_date, end_date)
-    data["x"] = violation_trends.collect{|k, v|k.to_date.strftime("%d-%b")}
+    data["x"] = violation_trends.collect{|k, v|k.to_date}
     data["y"] = violation_trends.collect{|k, v|v}
     render :json => data and return
   end
