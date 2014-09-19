@@ -51,29 +51,32 @@ end
 def record(site,data)
   # This methods records the results received from BART
 
-  (data || []).each do |result|
+  (data ||[]).each do |day|
+    (day || []).each do |result|
 
 
-    defn = Definition.check(result["rule_desc"], "Validation rule")
+      defn = Definition.check(result["rule_desc"], "Validation rule")
 
-    #Check if record for same day already exists
-    past_result = Observation.where(:site_id =>  site.id,
-                               :definition_id => defn,
-                               :obs_datetime => result["date_checked"]).first
+      #Check if record for same day already exists
+      past_result = Observation.where(:site_id =>  site.id,
+                                      :definition_id => defn,
+                                      :obs_datetime => result["date_checked"]).first
 
-    #If is doesn't exist create new record otherwise update existing record
-    if past_result.blank?
+      #If is doesn't exist create new record otherwise update existing record
+      if past_result.blank?
         past_result = Observation.new({:site_id =>  site.id,
                                        :definition_id => defn,
                                        :obs_datetime => result["date_checked"],
                                        :value_numeric => result["failures"],
                                        :creator => $user_id
                                       })
-    else
-      past_result.value_numeric = result["failures"]
+      else
+        past_result.value_numeric = result["failures"]
+      end
+      past_result.save
     end
-    past_result.save
   end
+
 end
 
 def record_pulled_datetime(site, start_date, end_date)
