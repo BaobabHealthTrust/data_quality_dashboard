@@ -1,7 +1,8 @@
 class SiteController < ApplicationController
 
   def index
-    @sites = Site.all
+    @sites = Site.where(:enabled => false)
+    @sites_enabled = Site.where(:enabled => true)
   end
   def add_site
     render :layout => false
@@ -41,8 +42,19 @@ class SiteController < ApplicationController
   end
 
   def save_site
-    result =  Site.add_site(params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
-    render :text => result.to_json
+    response = ["Site could not be added", nil]
+    site = Site.where(:name => params[:site], :enabled => false).first
+    if !site.blank?
+      site.enabled = true
+      site.code = params[:code]
+      site.host = params[:host]
+      site.port = params[:port]
+      site.save
+
+      response = ["Site successfully saved", true]
+    end
+    # result =  Site.add_site(params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
+    render :text => response.to_json
   end
 
   def update_current_site
@@ -59,7 +71,17 @@ class SiteController < ApplicationController
   end
 
   def update_site
-    result =  Site.update_site(params[:site_old],params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
-    render :text => result.to_json
+    response = ["Site could not be updated", nil]
+    site = Site.where(:name => params[:site], :enabled => true).first
+    if !site.blank?
+      site.code = params[:code]
+      site.host = params[:host]
+      site.port = params[:port]
+      site.save
+
+      response = ["Site successfully updated", true]
+    end
+    #result =  Site.update_site(params[:site_old],params[:site], params[:code],params[:host],params[:port],params[:region],params[:x],params[:y])
+    render :text => response.to_json
   end
 end

@@ -19,7 +19,12 @@
         <div class="form-group" id="siteGroup">
             <label for="inputName" class="col-lg-2 control-label">Site Name</label>
             <div class="col-lg-10">
-              <input class="form-control" id="site" name="site" placeholder="Site name">
+              <%= select_tag("site", options_for_select([""] + @sites.map(&:name).sort),
+                             {:class =>'chzn-select form-control',
+                              :required => '',
+                              :name => 'site'
+                             })
+              %>
             </div>
         </div>
 
@@ -44,24 +49,7 @@
             </div>
         </div>
 
-          <div class="form-group">
-          <label for="inputPassword" class="col-lg-2 control-label">Region</label>
-          <div class="col-lg-10">
-            <select id="region" name="region" class="form-control" placeholder="Region" required="" onchange="switchRegion(this.value)" >
-              <option value="">[ - Select site region in Malawi - ]</option>
-              <option value="Centre">Central Region</option>
-              <option value="North">Northern Region</option>
-              <option value="South">Southern Region</option>
-            </select>
-          </div>
-         </div>
 
-          <div class="form-group">
-            <label for="inputPassword" class="col-lg-2 control-label">Site Location</label>
-            <div class="col-lg-10">
-              <iframe id="map" style="border: 1px dotted #999; padding: 0px; text-align: center; width: 70%; overflow: hidden !important; height: 600px;" src="/map?region"></iframe>
-            </div>
-          </div>
           <input name="x" class="form-control" id="x" required="" value="" type="hidden" />
           <input name="y" class="form-control" id="y" required="" value="" type="hidden" />
 
@@ -87,7 +75,7 @@
       var host = document.getElementById('host').value
       var code = document.getElementById('code').value
       var port = document.getElementById('port').value
-      var region = document.getElementById('region').value
+
 
       if (site.trim() == "")
       {
@@ -122,7 +110,7 @@
       }
       else
       {
-          data = "?region=" + region +"&site=" +site +"&port=" + port + "&host=" + host +"&x=" + x + "&y=" + y +"&code=" + code
+          data = "?site=" +site +"&port=" + port + "&host=" + host +"&x=" + x + "&y=" + y +"&code=" + code
           jQuery.ajax({
               url:  "/site/save_site" + data,
               type:"POST",
@@ -159,12 +147,12 @@
   jQuery.validator.addMethod("host", function(value, element) {
       return this.optional(element) || /^\d+\.\d+\.\d+\.\d+/.test(value);
   }, "Not a valid IP address.");
-*/
+
     function switchRegion(region){
         document.getElementById("map").setAttribute("src", "/map?region=" + region.toLowerCase().trim());
     }
 
-
+*/
 
   //-->
 </script>

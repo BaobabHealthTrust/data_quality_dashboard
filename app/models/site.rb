@@ -1,7 +1,7 @@
 class Site < ActiveRecord::Base
   set_primary_key :site_id
-  validates_presence_of :code, :name
-  validates_uniqueness_of :name, :code
+  #validates_presence_of :code, :name
+  #validates_uniqueness_of :name, :code
   before_save :add_creator
 
   cattr_accessor :current
@@ -23,7 +23,7 @@ class Site < ActiveRecord::Base
        end
     end
 
-    alerts["normal"] = alerts["normal"] +  (Site.find(:all, :select => "name").map(&:name)   - alerts.values.flatten)
+    alerts["normal"] = alerts["normal"] +  (Site.where(:enabled => true).map(&:name)   - alerts.values.flatten)
 
     return alerts
   end
@@ -38,7 +38,10 @@ class Site < ActiveRecord::Base
   end
 
   def add_creator
-    self.creator = User.current.id
+    if !self.creator
+      self.creator = User.current.id
+    end
+
   end
 
   def self.update_site(old_name,name,code, host, port, region, x, y)

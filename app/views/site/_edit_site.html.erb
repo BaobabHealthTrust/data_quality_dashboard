@@ -21,18 +21,13 @@
           <div class="col-lg-10">
             <select id="sites" name="sites" class="form-control" placeholder="Sites" required="" onchange="changeSite(this.value)" >
               <option value="">[ - Select site - ]</option>
-              <% (@sites || []).each do |site| %>
+              <% (@sites_enabled || []).each do |site| %>
                 <option onselect="" value="<%= site.name %>"><%= site.name %></option>
               <% end %>
             </select>
           </div>
         </div>
-        <div class="form-group" id="siteGroupEdit">
-          <label for="editName" class="col-lg-2 control-label">Site Name</label>
-          <div class="col-lg-10">
-            <input class="form-control" id="siteEdit" name="site" placeholder="Site name">
-          </div>
-        </div>
+
 
         <div class="form-group" id="codeGroupEdit">
           <label for="editCode" class="col-lg-2 control-label">Site Code</label>
@@ -55,24 +50,6 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="inputPassword" class="col-lg-2 control-label">Region</label>
-          <div class="col-lg-10">
-            <select id="regionEdit" name="region" class="form-control" placeholder="Region" required="" onchange="changeRegion(this.value)" >
-              <option value="">[ - Select site region in Malawi - ]</option>
-              <option value="Centre">Central Region</option>
-              <option value="North">Northern Region</option>
-              <option value="South">Southern Region</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="inputPassword" class="col-lg-2 control-label">Site Location</label>
-          <div class="col-lg-10">
-            <iframe id="mapEdit" style="border: 1px dotted #999; padding: 0px; text-align: center; width: 70%; overflow: hidden !important; height: 600px;" src="/map?region"></iframe>
-          </div>
-        </div>
         <input name="x" class="form-control" id="xEdit" required="" value="" type="hidden" />
         <input name="y" class="form-control" id="yEdit" required="" value="" type="hidden" />
 
@@ -91,7 +68,7 @@
     <!--
 
     var sites = {}
-    <% @sites.each do |site| %>
+    <% @sites_enabled.each do |site| %>
         sites["<%= site.name %>"] = {"name": '<%= site.name %>', "host": '<%= site.host %>',
             "port": '<%= site.port %>', "x": '<%= site.x %>', "y":'<%= site.y %>' ,
             "code": '<%= site.code %>',"region":'<%= site.region %>'}
@@ -102,18 +79,13 @@
         var y = document.getElementById('yEdit').value
         var x = document.getElementById('xEdit').value
         var oldSite = document.getElementById('sites').value
-        var site = document.getElementById('siteEdit').value
+        //var site = document.getElementById('siteEdit').value
         var host = document.getElementById('hostEdit').value
         var code = document.getElementById('codeEdit').value
         var port = document.getElementById('portEdit').value
-        var region = document.getElementById('regionEdit').value
+        //var region = document.getElementById('regionEdit').value
 
-        if (site.trim() == "")
-        {
-            document.getElementById('siteGroupEdit').setAttribute("class", "form-group has-error")
-            document.getElementById('siteEdit').focus();
-        }
-        else if (code.trim() == "")
+        if (code.trim() == "")
         {
             document.getElementById('codeGroupEdit').setAttribute("class", "form-group has-error")
             document.getElementById('codeEdit').focus();
@@ -141,8 +113,8 @@
         }
         else
         {
-            data = "?region=" + region +"&site=" +site +"&port=" + port + "&host=" + host +"&x=" + x
-                    + "&y=" + y +"&code=" + code + "&site_old=" +oldSite
+            data = "?site=" +oldSite +"&port=" + port + "&host=" + host +"&x=" + x
+                    + "&y=" + y +"&code=" + code;
             jQuery.ajax({
                 url:  "/site/update_site" + data,
                 type:"POST",
@@ -157,7 +129,7 @@
                     else
                     {
                         document.getElementById("messageContainerEdit").setAttribute("class","alert alert-dismissable alert-success");
-                        document.getElementById('site').value = ""
+                        //document.getElementById('site').value = ""
                         document.getElementById('host').value = ""
                         document.getElementById('code').value = ""
                         document.getElementById('port').value = ""
@@ -182,9 +154,9 @@
 
     function changeSite(name)
     {
-        console.log(name    )
-        document.getElementById('regionEdit').value = sites[name]["region"]
-        document.getElementById('siteEdit').value = sites[name]["name"]
+        //console.log(name    )
+        //document.getElementById('regionEdit').value = sites[name]["region"]
+        //document.getElementById('siteEdit').value = sites[name]["name"]
         document.getElementById('hostEdit').value = sites[name]["host"]
         document.getElementById('codeEdit').value = sites[name]["code"]
         document.getElementById('portEdit').value = sites[name]["port"]

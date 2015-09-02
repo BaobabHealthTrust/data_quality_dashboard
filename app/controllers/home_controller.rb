@@ -2,7 +2,7 @@ class HomeController < ApplicationController
 
   def index
 
-    @sites = Site.all
+    @sites = Site.where(:enabled => true)
     @alerts = Site.alerts
 
   end
@@ -10,11 +10,11 @@ class HomeController < ApplicationController
   def map_main
 
     @sites = []
-    (Site.all).each do |source|
+    (Site.where(:enabled => true)).each do |source|
       site = {
           'region' => source["region"],
-          'x' => source["x"],
-          'y' =>source["y"],
+          'x' => source["x"].to_f,
+          'y' =>source["y"].to_f,
           'sitecode' => source["code"],
           'name' => source["name"]
       }
