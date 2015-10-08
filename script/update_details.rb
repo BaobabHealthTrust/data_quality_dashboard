@@ -12,7 +12,7 @@ $user_id = User.first.id
 def start
 
   #Get all sitess to get data from
-  sites = Site.all
+  sites = Site.where(:enabled => true)
 
   (sites || []).each do |site|
 
@@ -23,7 +23,7 @@ def start
     start_date = last_update(site)
     end_date = Date.today.to_date
 
-    url = "http://#{site.host}:#{site.port}/validation_result/list"
+   url = "http://#{site.host}:#{site.port}/validation_result/list"
     data = JSON.parse(RestClient.post(url, {:start_date => start_date, :end_date => end_date})) rescue (
     puts "**** Error when pulling data from site #{site.name}"
     next
