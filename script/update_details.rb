@@ -24,10 +24,14 @@ def start
     end_date = Date.today.to_date
 
    url = "http://#{site.host}:#{site.port}/validation_result/list"
-    data = JSON.parse(RestClient.post(url, {:start_date => start_date, :end_date => end_date})) rescue (
-    puts "**** Error when pulling data from site #{site.name}"
-    next
-    )
+   data = JSON.parse(RestClient::Request.execute(:method => :post, 
+					:url => url, 
+					:timeout => 90000000,
+					:open_timeout => 90000000, 
+					:payload => {:start_date => start_date, :end_date => end_date})) rescue (
+    		puts "**** Error when pulling data from site #{site.name}"
+    		next
+	)
 
     #saves the results
     puts "Saving results for site #{site.name}"
@@ -43,7 +47,7 @@ def last_update(site)
   #This method returns the last day the application got results
   return if site.blank?
 
-  return PullTracker.where(:site_id => site.id).first.pulled_datetime.to_date rescue (Date.today - 120.days).to_date
+  return PullTracker.where(:site_id => site.id).first.pulled_datetime.to_date rescue (Date.today - 30.days).to_date
 
 end
 
