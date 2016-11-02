@@ -5,6 +5,7 @@ class HomeController < ApplicationController
     @sites = Site.where(:enabled => true)
     @alerts = Site.alerts
 
+    #render :layout => false
   end
 
   def map_main
