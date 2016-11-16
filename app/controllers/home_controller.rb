@@ -2,7 +2,7 @@ class HomeController < ApplicationController
 
   def index
 
-    @sites = Site.where(:enabled => true)
+    @sites = Site.by_enabled.key(true)
     @alerts = Site.alerts
 
   end
@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   def map_main
 
     @sites = []
-    (Site.where(:enabled => true)).each do |source|
+    (Site.by_enabled.key(true)).each do |source|
       site = {
           'region' => source["region"],
           'x' => source["x"].to_f,
@@ -22,7 +22,7 @@ class HomeController < ApplicationController
       @sites << site
     end
     @sites_errors = Observation.sorted_sites_failures
-    @alerts = Site.alerts;
+    @alerts = Site.alerts
     render :layout => false
   end
 

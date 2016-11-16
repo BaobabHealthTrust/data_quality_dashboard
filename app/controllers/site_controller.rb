@@ -1,8 +1,8 @@
 class SiteController < ApplicationController
 
   def index
-    @sites = Site.where(:enabled => false)
-    @sites_enabled = Site.where(:enabled => true)
+    @sites = Site.by_enabled.key(false).each
+    @sites_enabled = Site.by_enabled.key(true).each
   end
   def add_site
     render :layout => false
@@ -43,7 +43,7 @@ class SiteController < ApplicationController
 
   def save_site
     response = ["Site could not be added", nil]
-    site = Site.where(:name => params[:site], :enabled => false).first
+    site = Site.by_name.key(params[:site]).first
     if !site.blank?
       site.enabled = true
       site.code = params[:code]
@@ -59,7 +59,7 @@ class SiteController < ApplicationController
 
   def update_current_site
 
-    Site.current = Site.find_by_name(params[:site])
+    Site.current = Site.by_name.key(params[:site]).last
     render :layout => false
   end
 
@@ -72,7 +72,7 @@ class SiteController < ApplicationController
 
   def update_site
     response = ["Site could not be updated", nil]
-    site = Site.where(:name => params[:site], :enabled => true).first
+    site = Site.by_name.key(params[:site]).first
     if !site.blank?
       site.code = params[:code]
       site.host = params[:host]

@@ -1,10 +1,29 @@
-class Site < ActiveRecord::Base
-  set_primary_key :site_id
-  #validates_presence_of :code, :name
-  #validates_uniqueness_of :name, :code
-  before_save :add_creator
+class Site < CouchRest::Model::Base
+  use_database "sites"
 
   cattr_accessor :current
+
+  property :name, String
+  property :description, String
+  property :host, String
+  property :port, Integer
+  property :code, String
+  property :x, String
+  property :y, String
+  property :region, String
+  property :enabled, TrueClass, :default => false
+  timestamps!
+
+  design do
+    view :by_enabled,
+         :map => "function(doc) {
+                     emit(doc['enabled']);
+                }"
+    view :by_name,
+         :map => "function(doc) {
+                     emit(doc['name']);
+                }"
+  end
 
   def self.alerts
     alerts = {"urgent" => [],
@@ -23,7 +42,7 @@ class Site < ActiveRecord::Base
        end
     end
 
-    alerts["normal"] = alerts["normal"] +  (Site.where(:enabled => true).map(&:name)   - alerts.values.flatten)
+    alerts["normal"] = alerts["normal"] +  (Site.by_enabled.key(true).map(&:name)   - alerts.values.flatten)
 
     return alerts
   end
@@ -45,7 +64,7 @@ class Site < ActiveRecord::Base
   end
 
   def self.update_site(old_name,name,code, host, port, region, x, y)
-    site = Site.where("name = ?", old_name).first
+    site = Site.by_name.key(old_name).first
     site.name = name
     site.code = code
     site.host = host

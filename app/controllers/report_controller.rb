@@ -2,7 +2,7 @@ class ReportController < ApplicationController
 
   def dynamic_view
 
-   site = Site.find_by_name(params[:site])
+   site = Site.by_name.key(params[:site]).last
    @site_name = site.name rescue nil
    @site_errors = Observation.sorted_site_failures(site.id) rescue {}
 

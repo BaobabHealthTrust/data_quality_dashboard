@@ -1,19 +1,29 @@
 require 'digest/sha1'
 require 'digest/sha2'
+require 'couchrest_model'
+class User < CouchRest::Model::Base
+  use_database "users"
 
-class User < ActiveRecord::Base
-  require 'digest/sha1'
-
-  validates_presence_of :username, :password
-  validates_uniqueness_of :username
-  set_primary_key :user_id
-  has_one :user_role
   cattr_accessor :current
+
+  property :username, String
+  property :first_name, String
+  property :last_name, String
+  property :password, String
+  property :salt, String
+  property :user_role, String
+  property :voided, TrueClass, :default => false
+
+  timestamps!
+
+  design do
+    view :by_username
+  end
+
   before_save :encrypt_password
-  self.default_scope :conditions => "#{self.table_name}.voided = 0"
 
   def role
-      self.user_role.role.role
+      self.user_role
   end
 
   def self.random_string(len)
@@ -35,15 +45,15 @@ class User < ActiveRecord::Base
 
   def self.authenticate(username, password)
 
-    user = User.find_by_username(username) rescue nil
+    user = User.by_username.key(username) rescue nil
 
     if !user.nil?
-
       salt = Digest::SHA1.hexdigest(password + user.salt)
 
       if salt == user.password
 
         return true
+
       else
         return false
       end
@@ -56,7 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def self.create_user(username, password, user_role)
-    exists = User.where("voided = 0 AND username = ?", username)
+    exists = User.by_username.key(username)
 
     if !exists.blank?
       return ["Username is already taken", nil]
@@ -64,24 +74,17 @@ class User < ActiveRecord::Base
       new_user = User.new()
       new_user.password = password
       new_user.username = username
-      if new_user.save
-        role = Role.find_by_role(user_role).id
-        UserRole.create({:user_id => new_user.id, :role_id => role})
-        return ["User successfully created", true]
-      else
-        return ["User could not be created",nil]
-      end
+      new_user.user_role = user_role
+      new_user.save
     end
   end
 
   def User.update_user(user_name_old, username, password, user_role)
-    user = User.where(:username => user_name_old).first
-    if user.update_attributes({:username => username, :password => password})
-      if user_role.upcase != user.role.upcase
-        role = Role.find_by_role(user_role).id
-        user_role = user.user_role
-        user_role.update_attributes({:role_id => role})
-      end
+    user = User.by_username.key(user_name_old).first
+    user.username = username
+    user.password = password
+    user.user_role = user_role
+    if user.save
       return ["Details for user #{username} successfully updated", true]
     else
       return ["Could not update details for user #{username}", nil]

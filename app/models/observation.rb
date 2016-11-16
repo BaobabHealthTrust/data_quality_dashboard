@@ -1,12 +1,34 @@
-class Observation < ActiveRecord::Base
-  set_primary_key :observation_id
-  belongs_to :site, :foreign_key => :site_id
-  belongs_to :definition, :foreign_key => :definition_id
-  validates_presence_of :site_id
-  validates_presence_of :definition_id
+class Observation < CouchRest::Model::Base
+
+  property :site_code, String
+  property :site_name, String
+  property :date_checked, Date
+  property :failures, String
+  property :rule, String
+
+  design do
+    view :by_site_code,
+         :map => "function(doc) {
+                  if (doc['site_code'] != '') {
+                    emit([doc['site_code']], 1);
+                  }
+                }"
+    view :by_date_checked,
+         :map => "function(doc) {
+                  if (doc['date_checked'] != '' && doc['date_checked'] != null) {
+                    emit([doc['date_checked']], 1);
+                  }
+                }"
+    view :by_rule,
+         :map => "function(doc) {
+                  if (doc['rule'] != '' && doc['rule'] != null) {
+                    emit([doc['rule']], 1);
+                  }
+                }"
+  end
 
   def self.sorted_site_failures(site_id)
-
+    return {}
     self.find_by_sql(["SELECT ob.value_numeric, def.short_name FROM observations ob
 
                                             INNER JOIN definitions def
@@ -22,7 +44,7 @@ class Observation < ActiveRecord::Base
   end
 
   def self.sorted_sites_failures
-
+    return {}
     self.find_by_sql("SELECT SUM(ob.value_numeric) sum, ob.site_id site_id FROM observations ob
 
                                               INNER JOIN definitions def
@@ -38,6 +60,7 @@ class Observation < ActiveRecord::Base
   end
 
   def self.rule_violation_trend(site_id, definition_id, start_date, end_date)
+    return {}
     data_hash = {}
     data = self.find_by_sql("SELECT value_numeric, obs_datetime FROM observations 
       WHERE definition_id=#{definition_id} AND DATE(obs_datetime) >= '#{start_date}'
@@ -52,6 +75,7 @@ class Observation < ActiveRecord::Base
   end
 
   def self.aggregate_rule_violation_trend(site_id, start_date, end_date)
+    return {}
     data_hash = {}
     data = self.find_by_sql("SELECT SUM(value_numeric) as value_numeric, obs_datetime FROM observations
       WHERE DATE(obs_datetime) >= '#{start_date}' AND DATE(obs_datetime) <= '#{end_date}'
@@ -66,6 +90,7 @@ class Observation < ActiveRecord::Base
   end
 
   def self.latest_site_obs_date(site_id)
+    return {}
     latest_date = self.find_by_sql("SELECT max(obs_datetime) as latest_date FROM observations JOIN definitions
       ON definitions.definition_type = (SELECT definition_type_id FROM definition_types
       WHERE name = 'Validation rule') WHERE site_id =#{site_id} LIMIT 1").last.latest_date

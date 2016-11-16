@@ -1,7 +1,13 @@
-require File.expand_path('../boot', __FILE__)
-
-require 'rails/all'
-
+require "rails"
+# Pick the frameworks you want:
+require "active_model/railtie"
+#require "active_job/railtie"
+# require "active_record/railtie"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_view/railtie"
+require "sprockets/railtie"
+require "rails/test_unit/railtie"
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -39,5 +45,6 @@ module DataQualityDashboard
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    config.dependency_loading = true if $rails_rake_task
   end
 end
