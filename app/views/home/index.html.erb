@@ -120,7 +120,7 @@
         next if @alerts["normal"].include?(site.name)
     %>
 
-    sites.push('<%= site.name.downcase %>')
+    sites.push('<%= site.name %>')
     <% end %>
 
     function __$(id) {

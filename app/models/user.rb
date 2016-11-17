@@ -1,6 +1,4 @@
 require 'digest/sha1'
-require 'digest/sha2'
-require 'couchrest_model'
 class User < CouchRest::Model::Base
   use_database "users"
 
@@ -45,7 +43,7 @@ class User < CouchRest::Model::Base
 
   def self.authenticate(username, password)
 
-    user = User.by_username.key(username) rescue nil
+    user = User.by_username.key(username).first rescue nil
 
     if !user.nil?
       salt = Digest::SHA1.hexdigest(password + user.salt)
@@ -66,7 +64,7 @@ class User < CouchRest::Model::Base
   end
 
   def self.create_user(username, password, user_role)
-    exists = User.by_username.key(username)
+    exists = User.by_username.key(username).first
 
     if !exists.blank?
       return ["Username is already taken", nil]

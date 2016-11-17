@@ -4,7 +4,7 @@ class ReportController < ApplicationController
 
    site = Site.by_name.key(params[:site]).last
    @site_name = site.name rescue nil
-   @site_errors = Observation.sorted_site_failures(site.id) rescue {}
+   @site_errors = Observation.sorted_site_failures(site.name) rescue {}
 
     render :layout => false
   end
@@ -23,33 +23,29 @@ class ReportController < ApplicationController
 
   def rule_violations_summary
      site_name = (params[:site_name] || 'MPC')
-     site = Site.find_by_name(site_name)
-     @site_name = site.name
-     @site_errors = Observation.sorted_site_failures(site.id)
+     @site_name = site_name
+     @site_errors = Observation.sorted_site_failures(site_name)
     render :layout => false
   end
 
   def rule_violations_trend_graph
     site_name = (params[:site_name] || 'MPC')
-    site_id = Site.find_by_name(site_name).id
     start_date = Date.today - 3.months
     end_date = Date.today
 
     @data = {}
-    @violation_trends = Observation.aggregate_rule_violation_trend(site_id, start_date, end_date)
+    @violation_trends = Observation.aggregate_rule_violation_trend(site_name, start_date, end_date)
     
     render :layout => false
   end
 
   def rule_violations_graph
     site_name = (params[:site_name] || 'MPC')
-    site_id = Site.find_by_name(site_name).id
     start_date = Date.today - 3.months
     end_date = Date.today
-    short_name = params[:short_name]
-    definition_id = Definition.find_by_short_name(short_name).id rescue 1
+    rule = params[:short_name]
     @data = {}
-    violation_trends = Observation.rule_violation_trend(site_id, definition_id, start_date, end_date)
+    violation_trends = Observation.rule_violation_trend(site_name, rule, start_date, end_date)
     @data["x"] = violation_trends.collect{|k, v|k.to_date.strftime("%d-%b")}
     @data["y"] = violation_trends.collect{|k, v|v}
     render :layout => false
@@ -57,22 +53,19 @@ class ReportController < ApplicationController
   
   def site_summary
     site_name = (params[:site_name] || 'MPC')
-    site = Site.find_by_name(site_name)
-    @site_name = site.name rescue nil
-    @site_errors = Observation.sorted_site_failures(site.id)
-    @latest_date = Observation.latest_site_obs_date(site.id)
+    @site_name = site_name
+    @site_errors = Observation.sorted_site_failures(site_name)
+    @latest_date = Observation.latest_site_obs_date(site_name)
     render :layout => "application"
   end
 
   def plot_rule_violations_graph
     site_name = (params[:site_name])
-    site_id = Site.find_by_name(site_name).id
     start_date = Date.today - 3.months
     end_date = Date.today
-    short_name = params[:short_name]
-    definition_id = Definition.find_by_short_name(short_name).id
+    rule = params[:short_name]
     data = {}
-    violation_trends = Observation.rule_violation_trend(site_id, definition_id, start_date, end_date)
+    violation_trends = Observation.rule_violation_trend(site_name, rule, start_date, end_date)
     data["x"] = violation_trends.collect{|k, v|k.to_date}
     data["y"] = violation_trends.collect{|k, v|v}
     render :json => data and return

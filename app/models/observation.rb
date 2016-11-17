@@ -7,10 +7,10 @@ class Observation < CouchRest::Model::Base
   property :rule, String
 
   design do
-    view :by_site_code,
+    view :by_site_name,
          :map => "function(doc) {
-                  if (doc['site_code'] != '') {
-                    emit([doc['site_code']], 1);
+                  if (doc['site_name'] != '') {
+                    emit([doc['site_name']], 1);
                   }
                 }"
     view :by_date_checked,
@@ -25,68 +25,79 @@ class Observation < CouchRest::Model::Base
                     emit([doc['rule']], 1);
                   }
                 }"
+     view :by_site_name_and_date_checked,
+          :map => "function(doc) {
+              if (doc['site_name'] != '' && doc['date_checked'] != '') {
+                emit(doc['site_name'].split(' ').join('_') + '_' + doc['date_checked'].substr(0, 8));
+              }
+            }"
+     view :by_site_name_and_rule_and_date_checked,
+         :map => "function(doc) {
+              if (doc['site_name'] != '' && doc['rule'] != '' && doc['date_checked'] != '') {
+                emit(doc['site_name'].split(' ').join('_') + '_' + doc['rule'].split(' ').join('_') + '_' + doc['date_checked'].substr(0, 8));
+              }
+            }"
   end
 
-  def self.sorted_site_failures(site_id)
-    return {}
-    self.find_by_sql(["SELECT ob.value_numeric, def.short_name FROM observations ob
+  def self.sorted_site_failures(site_name)
 
-                                            INNER JOIN definitions def
-                                              ON ob.definition_id = def.definition_id AND
-                                                  def.definition_type = (SELECT definition_type_id
-                                                        FROM definition_types WHERE name = 'Validation rule')
+    latest_date = Observation.by_site_name.key([site_name]).last.date_checked.to_date.strftime("%Y%m%d") rescue nil
+    return {} if latest_date.blank? || site_name.blank?
 
-                                            WHERE ob.obs_datetime = (
-                                                    SELECT DATE(max(pulled_datetime)) FROM pull_trackers
-                                                    WHERE site_id = ? LIMIT 1
-                                              ) AND ob.site_id = ?", site_id, site_id]
-    ).inject({}){|result, obj| result[obj.short_name] = obj.value_numeric; result}.sort_by {|k, v| v}.reverse
+    key = site_name.gsub(/\s+/, "_") + "_" + latest_date
+    data = Observation.by_site_name_and_date_checked.key(key)
+
+    result =  {}
+    data.each do |d|
+      result[d['rule']] = d['failures']
+    end
+
+    result
   end
 
   def self.sorted_sites_failures
-    return {}
-    self.find_by_sql("SELECT SUM(ob.value_numeric) sum, ob.site_id site_id FROM observations ob
 
-                                              INNER JOIN definitions def
-                                              ON ob.definition_id = def.definition_id AND
-                                                  def.definition_type = (SELECT definition_type_id
-                                                        FROM definition_types WHERE name = 'Validation rule')
-
-                                                  AND ob.obs_datetime = (
-                                                    SELECT DATE(max(pulled_datetime)) FROM pull_trackers
-                                                    WHERE site_id = ob.site_id LIMIT 1
-                                              )
-                                              GROUP BY ob.site_id").inject({}){|r, data| r[Site.find(data.site_id).name] = data.sum.to_i; r}
+    result = {}
+    Site.by_enabled.key(true).each do |site|
+      result[site.name] = self.sorted_site_failures(site.name).values.collect{|v| v.to_i}.sum
+    end
+    result
   end
 
-  def self.rule_violation_trend(site_id, definition_id, start_date, end_date)
-    return {}
-    data_hash = {}
-    data = self.find_by_sql("SELECT value_numeric, obs_datetime FROM observations 
-      WHERE definition_id=#{definition_id} AND DATE(obs_datetime) >= '#{start_date}'
-      AND DATE(obs_datetime) <= '#{end_date}' AND site_id = #{site_id}")
-    
+  def self.rule_violation_trend(site_name, rule, start_date, end_date)
+
+    startkey = site_name.gsub(/\s+/, "_") + "_" + rule.gsub(/\s+/, "_") + start_date.to_date.strftime("%Y%m%d")
+    endkey = site_name.gsub(/\s+/, "_") + "_" + rule.gsub(/\s+/, "_") + end_date.to_date.strftime("%Y%m%d")
+
+    data = Observation.by_site_name_and_rule_and_date_checked.startkey(startkey).endkey(endkey)
+
+    result = {}
     data.each do |e|
-      obs_date = e.obs_datetime.to_date.strftime("%d-%b-%Y")
-      data_hash[obs_date] = e.value_numeric
+      obs_date = e.date_checked.to_date.strftime("%d-%b-%Y")
+      result[obs_date] = e.failures
     end
-    
-    return data_hash.sort_by{|k, v|k.to_date}
+
+    result = result.sort_by{|k, v|k.to_date}
+    result
   end
 
-  def self.aggregate_rule_violation_trend(site_id, start_date, end_date)
+  def self.aggregate_rule_violation_trend(site_name, start_date, end_date)
     return {}
-    data_hash = {}
-    data = self.find_by_sql("SELECT SUM(value_numeric) as value_numeric, obs_datetime FROM observations
-      WHERE DATE(obs_datetime) >= '#{start_date}' AND DATE(obs_datetime) <= '#{end_date}'
-      AND site_id = #{site_id} GROUP BY DATE(obs_datetime)")
-    
+
+    startkey = site_name.gsub(/\s+/, "_") + start_date.strftime("%Y%m%d")
+    endkey = site_name.gsub(/\s+/, "_") + end_date.strftime("%Y%m%d")
+
+    data = Observation.by_site_name_and_date_checked.startkey(startkey).endkey(endkey)
+
+    result = {}
     data.each do |e|
-      obs_date = e.obs_datetime.to_date.strftime("%d-%b-%Y")
-      data_hash[obs_date] = e.value_numeric
+      obs_date = e.date_checked.to_date.strftime("%d-%b-%Y")
+      result[obs_date] = 0 if result[obs_date].blank?
+      result[obs_date] = result[obs_date] + e.failures
     end
 
-    return data_hash.sort_by{|k, v|k.to_date}
+    result.sort_by{|k, v|k.to_date}
+    result
   end
 
   def self.latest_site_obs_date(site_id)

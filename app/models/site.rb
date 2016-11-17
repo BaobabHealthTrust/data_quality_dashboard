@@ -12,6 +12,8 @@ class Site < CouchRest::Model::Base
   property :y, String
   property :region, String
   property :enabled, TrueClass, :default => false
+  property :creator, String
+
   timestamps!
 
   design do
