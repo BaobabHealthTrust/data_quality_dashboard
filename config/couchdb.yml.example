@@ -1,0 +1,21 @@
+development: &development
+  protocol: 'http'
+  host: localhost
+  port: 5984
+  prefix: data_quality_dashboard
+  suffix: development
+  username: root
+  password: sam
+
+test:
+  <<: *development
+  suffix: test
+
+production:
+  protocol: 'https'
+  host: localhost
+  port: 5984
+  prefix: data_quality_dashboard
+  suffix: production
+  username: root
+  password: 123
